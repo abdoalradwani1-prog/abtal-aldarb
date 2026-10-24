@@ -1,2060 +1,381 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أبطال الضرب - مدرسة السعودية بالقنفذة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #f1f5f9;
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-        
-        input, select, textarea {
-            user-select: text !important;
-            -webkit-user-select: text !important;
-        }
-
-        .game-container {
-            max-width: 520px;
-            margin: 0 auto;
-            min-height: 100vh;
-            background: linear-gradient(180deg, #ffffff 0%, #f0fdfa 100%);
-            box-shadow: 0 0 30px rgba(0,0,0,0.08);
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
-        .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
-        
-        @keyframes bounce-short {
-            0%, 100% { transform: translateY(-15%); animation-timing-function: cubic-bezier(0.8,0,1,1); }
-            50% { transform: none; animation-timing-function: cubic-bezier(0,0,0.2,1); }
-        }
-        .animate-bounce-short { animation: bounce-short 0.4s ease-in-out 1; }
-
-        .btn-game {
-            transition: all 0.15s ease;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.18);
-        }
-        
-        .btn-game:active:not(:disabled) {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 rgba(0,0,0,0.18);
-        }
-
-        .btn-game:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .btn-answer {
-            background-color: white;
-            border: 2px solid #e2e8f0;
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: #1e293b;
-            border-radius: 1.25rem;
-            padding: 0.85rem;
-            box-shadow: 0 4px 0 #cbd5e1;
-            transition: all 0.15s;
-            cursor: pointer;
-        }
-
-        .btn-answer:active:not(:disabled) {
-            transform: translateY(3px);
-            box-shadow: 0 1px 0 #cbd5e1;
-        }
-
-        .btn-answer.correct {
-            background-color: #10b981 !important;
-            border-color: #059669 !important;
-            color: white !important;
-            box-shadow: 0 4px 0 #047857 !important;
-        }
-
-        .btn-answer.wrong {
-            background-color: #ef4444 !important;
-            border-color: #dc2626 !important;
-            color: white !important;
-            box-shadow: 0 4px 0 #b91c1c !important;
-            animation: shake 0.5s;
-        }
-
-        .screen {
-            display: none;
-            padding: 1.25rem;
-            flex: 1;
-            flex-direction: column;
-        }
-
-        .screen.active {
-            display: flex;
-        }
-
-        .leaderboard-row:nth-child(1) { background: linear-gradient(90deg, #fef9c3, #fef08a); border-color: #eab308; }
-        .leaderboard-row:nth-child(2) { background: linear-gradient(90deg, #f1f5f9, #e2e8f0); border-color: #94a3b8; }
-        .leaderboard-row:nth-child(3) { background: linear-gradient(90deg, #ffedd5, #fed7aa); border-color: #f97316; }
-
-        .toast-notification {
-            transform: translateY(-100%);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .toast-notification.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        @media print {
-            body { background: white !important; padding: 0 !important; }
-            .game-container { box-shadow: none !important; max-width: 100% !important; margin: 0 !important; width: 100% !important; background: white !important; }
-            .no-print { display: none !important; }
-            .screen { display: none !important; }
-            .screen.active { display: block !important; padding: 0.5rem !important; min-height: auto !important; }
-            #screen-certificate.active { display: flex !important; min-height: 90vh !important; justify-content: center !important; }
-            #teacher-view-logs, #teacher-view-students { max-height: none !important; overflow: visible !important; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' https://www.gstatic.com; connect-src https://*.googleapis.com; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>أبطال الضرب - مدرسة السعودية بالقنفذة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f5f9;--card:#fff;--tx:#1e293b;--mut:#64748b;--line:#e2e8f0;--teal:#0d9488;--grn:#10b981;--pur:#7c3aed;--red:#ef4444;--amb:#f59e0b;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f172a;--card:#1e293b;--tx:#f1f5f9;--mut:#94a3b8;--line:#334155}}
+:root[data-theme="dark"]{--bg:#0f172a;--card:#1e293b;--tx:#f1f5f9;--mut:#94a3b8;--line:#334155}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:'Cairo',Tahoma,sans-serif;background:var(--bg);color:var(--tx);user-select:none;-webkit-user-select:none;touch-action:manipulation}
+input,select{user-select:text;-webkit-user-select:text}
+#app{max-width:520px;margin:0 auto;min-height:100vh;background:var(--bg);padding:14px}
+.s{display:none;flex-direction:column;gap:12px}.s.on{display:flex}
+h1,h2,h3{margin:0}h1{font-size:2rem;font-weight:900}h2{font-size:1.25rem;font-weight:900}
+.c{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}
+.ctr{text-align:center}.mut{color:var(--mut);font-size:.8rem;font-weight:700}
+.b{font-family:inherit;font-weight:900;font-size:1rem;color:#fff;border:0;border-radius:14px;padding:13px;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.2);width:100%}
+.b:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.2)}.b:disabled{opacity:.45;cursor:not-allowed}
+.g{background:var(--grn)}.p{background:var(--pur)}.t{background:var(--teal)}.r{background:var(--red)}.a{background:var(--amb)}.gr{background:#64748b}
+.sm{font-size:.75rem;padding:8px 10px;width:auto;box-shadow:none;border-radius:10px}
+input,select{font-family:inherit;font-weight:700;width:100%;padding:11px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--tx);font-size:.95rem;margin-top:4px}
+label{font-weight:700;font-size:.8rem}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1}.sp{justify-content:space-between}.wrap{flex-wrap:wrap}
+.grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tb{font-family:inherit;font-weight:900;font-size:1.1rem;padding:10px 0;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--tx);cursor:pointer}
+.tb.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.q{font-size:2.8rem;font-weight:900;text-align:center;padding:18px 0}
+.ans{font-family:inherit;font-size:1.7rem;font-weight:900;padding:14px;border-radius:18px;border:2px solid var(--line);background:var(--card);color:var(--tx);box-shadow:0 4px 0 var(--line);cursor:pointer}
+.ans.ok{background:#10b981;border-color:#059669;color:#fff}.ans.no{background:#ef4444;border-color:#dc2626;color:#fff}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;width:100%;background:var(--red);transition:width 1s linear}
+.hint{background:#fef3c7;color:#92400e;border:1px solid #fcd34d;border-radius:14px;padding:10px;font-weight:700;font-size:.8rem;text-align:center}
+.big{font-size:1.6rem;font-weight:900}
+.lb{display:flex;justify-content:space-between;align-items:center;padding:10px;border:1px solid var(--line);border-radius:14px;background:var(--card);font-weight:900;font-size:.8rem}
+.cert{background:#fffbeb;color:#1e293b;border:8px double #fcd34d;border-radius:22px;padding:20px;text-align:center}
+.nm{display:inline-block;background:#fff;border:1px solid #fcd34d;border-radius:12px;padding:8px 16px;font-size:1.5rem;font-weight:900;margin:8px 0}
+.err{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;border-radius:12px;padding:8px;font-weight:700;font-size:.8rem;text-align:center}
+.lg{padding:10px;border:1px solid var(--line);border-radius:14px;font-size:.78rem;font-weight:700;display:flex;flex-direction:column;gap:4px}
+.x{background:none;border:0;color:var(--mut);cursor:pointer;font-size:1rem;width:auto;padding:2px 6px}
+#scroll{max-height:55vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+#toast{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;padding:10px 16px;border-radius:14px;font-weight:700;font-size:.8rem;opacity:0;transition:opacity .3s;pointer-events:none;z-index:9}#toast.on{opacity:1}
+#modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:none;align-items:center;justify-content:center;padding:16px;z-index:8}#modal.on{display:flex}
+footer{text-align:center;font-weight:900;font-size:.75rem;color:var(--teal);padding:14px 0 4px}
+@media print{body{background:#fff}.np,footer{display:none!important}.s{display:none!important}.s.on{display:block!important}#scroll{max-height:none}}
+</style>
 </head>
-<body class="bg-slate-100">
+<body>
+<div id="app">
+<div id="toast"></div>
+<div id="modal"><div class="c ctr" style="max-width:320px;width:100%"><h2 id="mt">تأكيد</h2><p id="mm" class="mut"></p><div class="row"><button class="b r sm" id="my">نعم، متأكد</button><button class="b gr sm" id="mn">إلغاء</button></div></div></div>
 
-<div class="game-container flex flex-col">
-    <!-- إشعارات النظام العلوية (Toast) -->
-    <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-[460px] pointer-events-none no-print">
-        <div id="toast-box" class="toast-notification bg-slate-800 text-white px-4 py-3 rounded-2xl shadow-lg flex items-center justify-between gap-2 text-xs font-bold border border-slate-700">
-            <div class="flex items-center gap-2">
-                <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
-                <span id="toast-message">تم تنفيذ العملية بنجاح</span>
-            </div>
-        </div>
-    </div>
+<section id="welcome" class="s on ctr" style="padding-top:40px">
+<div style="font-size:3.5rem">🏫</div><div class="mut">مدرسة السعودية بالقنفذة</div><h1>أبطال الضرب</h1>
+<button class="b g" data-go="slogin" style="margin-top:24px">🎓 دخول الطالب</button>
+<button class="b p" data-go="tlogin">🧑‍🏫 بوابة المعلم</button>
+</section>
 
-    <!-- نافذة التأكيد المخصصة للمعلم (Modal) -->
-    <div id="confirm-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print">
-        <div class="bg-white rounded-3xl p-5 max-w-sm w-full shadow-xl border border-slate-100 text-center space-y-4">
-            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto text-2xl">
-                <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <div>
-                <h3 id="confirm-title" class="text-base font-black text-slate-800 mb-1">تأكيد الإجراء</h3>
-                <p id="confirm-message" class="text-xs text-slate-500 font-bold leading-relaxed">هل أنت متأكد من رغبتك في المتابعة؟</p>
-            </div>
-            <div class="flex gap-2 pt-1">
-                <button id="confirm-yes-btn" class="btn-game flex-1 bg-rose-600 hover:bg-rose-700 text-white py-2.5 rounded-xl font-black text-xs">
-                    نعم، متأكد
-                </button>
-                <button onclick="closeConfirmModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl font-black text-xs transition-colors">
-                    إلغاء
-                </button>
-            </div>
-        </div>
-    </div>
+<section id="slogin" class="s">
+<div class="row sp np"><button class="x" data-go="welcome">➜</button><h2>دخول الطالب</h2><span></span></div>
+<form id="sform" class="c" autocomplete="off">
+<label>الاسم الثنائي أو الثلاثي<input id="sname" maxlength="40" required placeholder="مثال: أحمد حسن الزهراني"></label>
+<label style="display:block;margin-top:10px">الفصل<select id="sclass"></select></label>
+<button class="b g" style="margin-top:14px">انطلق للتحدي ⬅</button>
+</form>
+</section>
 
-    <!-- 1. شاشة الترحيب واختيار الدور -->
-    <div id="screen-welcome" class="screen active justify-center items-center text-center py-12 space-y-10">
-        <div class="w-full">
-            <div class="w-24 h-24 bg-gradient-to-tr from-teal-500 to-emerald-400 rounded-3xl flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-lg shadow-teal-500/20">
-                <i class="fa-solid fa-school text-4xl text-white"></i>
-            </div>
-            <h3 class="text-base font-bold text-gray-500 mb-1">مدرسة السعودية بالقنفذة</h3>
-            <h1 class="text-4xl font-black text-slate-800">أبطال الضرب</h1>
-        </div>
+<section id="tlogin" class="s">
+<div class="row sp np"><button class="x" data-go="welcome">➜</button><h2>بوابة المعلم</h2><span></span></div>
+<form id="tform" class="c" autocomplete="off">
+<div id="terr" class="err" style="display:none"></div>
+<label>البريد الإلكتروني<input id="tuser" type="email" dir="ltr" required autocomplete="off"></label>
+<label style="display:block;margin-top:10px">كلمة المرور<input id="tpass" type="password" dir="ltr" required autocomplete="off"></label>
+<button class="b p" style="margin-top:14px">دخول 🔓</button>
+</form>
+</section>
 
-        <div class="w-full space-y-3 px-2">
-            <button onclick="navTo('student-login')" class="btn-game w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl py-4 text-lg font-black flex items-center justify-center gap-3">
-                <i class="fa-solid fa-user-graduate text-xl"></i> دخول الطالب
-            </button>
-            <button onclick="navTo('teacher-login')" class="btn-game w-full bg-purple-600 hover:bg-purple-700 text-white rounded-2xl py-4 text-lg font-black flex items-center justify-center gap-3">
-                <i class="fa-solid fa-chalkboard-user text-xl"></i> بوابة المعلم
-            </button>
-        </div>
-    </div>
+<section id="tdash" class="s">
+<div class="row sp np"><h2>🧑‍🏫 لوحة المعلم</h2><button class="b r sm" data-act="tout" style="flex:0">خروج</button></div>
+<div class="grid2" style="grid-template-columns:repeat(3,1fr)">
+<div class="c ctr"><div class="mut">الطلاب</div><div class="big" id="k1">٠</div></div>
+<div class="c ctr"><div class="mut">الأسئلة</div><div class="big" id="k2">٠</div></div>
+<div class="c ctr"><div class="mut">الإتقان</div><div class="big" id="k3">٠٪</div></div></div>
+<div class="row np"><button class="b p sm" id="tab1" data-act="tab1">سجل الجلسات</button><button class="b gr sm" id="tab2" data-act="tab2">قائمة الطلاب</button></div>
+<div class="row np"><input id="tsearch" maxlength="40" placeholder="بحث بالاسم..."><select id="tfilter" style="flex:0 0 38%"></select></div>
+<div class="row wrap np"><button class="b t sm" data-act="refresh">تحديث</button><button class="b a sm" data-act="resetall">تصفير المحاولات</button><button class="b r sm" data-act="clearall">مسح السجلات</button><button class="b gr sm" data-act="print">طباعة</button></div>
+<div class="c"><div id="scroll"></div></div>
+</section>
 
-    <!-- 2. شاشة دخول الطالب -->
-    <div id="screen-student-login" class="screen justify-center py-6">
-        <div class="relative flex items-center justify-center mb-6">
-            <button onclick="navTo('welcome')" type="button" class="absolute right-0 text-slate-400 hover:text-slate-700 p-2 z-10 transition-colors">
-                <i class="fa-solid fa-arrow-right text-xl"></i>
-            </button>
-            <h2 class="text-xl font-black text-slate-800">تسجيل دخول الطالب</h2>
-        </div>
+<section id="home" class="s">
+<div class="row sp"><div><h2 id="hello">أهلاً بك يا بطل!</h2><span class="mut" id="hcls"></span></div><button class="x" data-act="sout" title="خروج">⎋</button></div>
+<div class="c" style="background:linear-gradient(90deg,#f59e0b,#fbbf24);color:#fff"><div class="row sp"><div><div style="font-size:.75rem;font-weight:700">🏆 بطل اليوم</div><div class="big" id="topn">—</div></div><div class="ctr"><div style="font-size:.7rem">أعلى نتيجة</div><div class="big" id="tops">٠</div></div></div></div>
+<button class="b t" data-go="psetup">🧮 تدريب الجداول</button>
+<button class="b r" id="speedb" data-act="speed">⚡ تحدي السرعة (٩٠ ثانية) — <span id="att"></span></button>
+<div class="mut ctr" style="margin-top:-6px">٥٠ سؤالاً، و٢٠٠ نقطة تؤهلك للشهادة 🎓</div>
+<button class="b p" data-go="board">🏅 لوحة الشرف</button>
+<button class="b a" id="hcert" data-act="cert" style="display:none">🎓 شهادة التميز</button>
+</section>
 
-        <div class="text-center mb-6">
-            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-2 text-2xl">
-                <i class="fa-solid fa-rocket"></i>
-            </div>
-            <h3 class="text-sm font-bold text-emerald-700">مدرسة السعودية بالقنفذة</h3>
-            <p class="text-xs text-gray-400 font-semibold">أدخل اسمك الكريم وفصلك للبدء</p>
-        </div>
+<section id="psetup" class="s">
+<div class="row sp"><button class="x" data-go="home">➜</button><h2>اختيار الجداول</h2><span></span></div>
+<div class="row"><button class="b t sm" data-act="all">الكل</button><button class="b gr sm" data-act="r15">١-٥</button><button class="b gr sm" data-act="r610">٦-١٠</button><button class="b r sm" data-act="none">إلغاء</button></div>
+<div id="tgrid" class="grid5"></div>
+<div class="c"><div class="mut ctr" style="margin-bottom:6px">عدد الأسئلة</div><div class="row" id="qc"></div></div>
+<button class="b t" id="pstart" data-act="pstart" disabled>ابدأ التدريب ▶</button>
+</section>
 
-        <form onsubmit="handleStudentLogin(event)" class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-4">
-            <div>
-                <label class="block text-slate-700 font-bold text-xs mb-1.5">الاسم الثنائي أو الثلاثي للطالب</label>
-                <input type="text" id="student-name" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 focus:outline-none transition-all font-bold text-slate-800 text-sm" placeholder="مثال: أحمد حسن الزهراني">
-            </div>
+<section id="game" class="s">
+<div class="row sp"><button class="b gr sm" data-act="quit" style="flex:0">إنهاء</button><span class="lb" id="prog" style="flex:0">١/٢٠</span><span class="lb" id="sc" style="flex:0">⭐ ٠</span><button class="b g sm" id="gsub" data-act="submit" style="flex:0;display:none">تسليم 🚀</button></div>
+<div id="tbox" style="display:none"><div class="row sp mut"><span>⏱ الوقت</span><span id="tl" style="color:var(--red)">٩٠</span></div><div class="bar"><i id="tbar"></i></div></div>
+<div class="mut ctr" id="combo" style="min-height:20px;color:var(--amb)"></div>
+<div class="c"><div class="mut ctr">ما حاصل ضرب:</div><div class="q" id="qt"></div></div>
+<div class="hint" id="hint" style="display:none"></div>
+<div class="grid2"><button class="ans" id="a0"></button><button class="ans" id="a1"></button><button class="ans" id="a2"></button><button class="ans" id="a3"></button></div>
+</section>
 
-            <div>
-                <label class="block text-slate-700 font-bold text-xs mb-1.5">الفصل الدراسي</label>
-                <select id="student-class" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 focus:outline-none cursor-pointer text-slate-700 font-bold text-sm bg-white">
-                    <option value="رابع أ">رابع أ</option>
-                    <option value="رابع ب">رابع ب</option>
-                    <option value="رابع ج">رابع ج</option>
-                    <option value="خامس أ">خامس أ</option>
-                    <option value="خامس ب">خامس ب</option>
-                    <option value="خامس ج">خامس ج</option>
-                    <option value="سادس أ">سادس أ</option>
-                    <option value="سادس ب">سادس ب</option>
-                    <option value="سادس ج">سادس ج</option>
-                    <option value="أول متوسط أ">أول متوسط أ</option>
-                    <option value="أول متوسط ب">أول متوسط ب</option>
-                </select>
-            </div>
+<section id="result" class="s ctr">
+<div style="font-size:3rem" id="ri">🏆</div><h2 id="rt"></h2><div class="mut" id="rs"></div>
+<div class="grid2"><div class="c"><div class="mut">النقاط</div><div class="big" id="fs"></div></div><div class="c"><div class="mut">الإتقان</div><div class="big" id="fa"></div></div><div class="c"><div class="mut">صحيحة</div><div class="big" id="fc" style="color:var(--grn)"></div></div><div class="c"><div class="mut">خاطئة</div><div class="big" id="fw" style="color:var(--red)"></div></div></div>
+<div class="c" id="ft" style="display:none"><span class="mut">الزمن المستغرق: </span><b id="ftv"></b></div>
+<div class="c" id="mist" style="display:none;text-align:right"><b style="font-size:.8rem">⚠ تحتاج مراجعة:</b><ul id="ml" style="margin:6px 0 0;padding-right:18px;font-weight:700;font-size:.85rem"></ul></div>
+<button class="b a" id="rcert" data-act="cert" style="display:none">🎓 عرض وطباعة الشهادة</button>
+<div class="row"><button class="b r" id="rretry" data-act="retry" style="display:none">تدرب على أخطائك</button><button class="b g" data-act="again">جولة أخرى</button></div>
+<button class="b t" data-go="home">🏠 الرئيسية</button><button class="b gr" data-go="board">لوحة الشرف</button>
+</section>
 
-            <button type="submit" class="btn-game w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl py-3.5 text-base font-black flex items-center justify-center gap-2 mt-2">
-                انطلق للتحدي <i class="fa-solid fa-arrow-left"></i>
-            </button>
-        </form>
-    </div>
+<section id="board" class="s">
+<div class="row sp"><button class="x" data-go="home">➜</button><h2>لوحة الشرف 🏆</h2><span></span></div>
+<div class="mut ctr">أفضل ١٠ في تحدي السرعة (النقاط ثم الزمن)</div>
+<div id="bl" style="display:flex;flex-direction:column;gap:8px"></div>
+<button class="b t" data-go="home">🏠 الرئيسية</button>
+</section>
 
-    <!-- 3. شاشة دخول المعلم -->
-    <div id="screen-teacher-login" class="screen justify-center py-6">
-        <div class="relative flex items-center justify-center mb-6">
-            <button onclick="navTo('welcome')" type="button" class="absolute right-0 text-slate-400 hover:text-slate-700 p-2 z-10 transition-colors">
-                <i class="fa-solid fa-arrow-right text-xl"></i>
-            </button>
-            <h2 class="text-xl font-black text-slate-800">بوابة دخول المعلم</h2>
-        </div>
-
-        <div class="text-center mb-6">
-            <div class="w-16 h-16 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-2 text-2xl">
-                <i class="fa-solid fa-user-shield"></i>
-            </div>
-            <h3 class="text-sm font-bold text-purple-700">مدرسة السعودية بالقنفذة</h3>
-            <p class="text-xs text-gray-400 font-semibold">لوحة تحكم وإحصائيات الطلاب</p>
-        </div>
-
-        <form onsubmit="handleTeacherLogin(event)" class="bg-white p-5 rounded-3xl shadow-sm border border-slate-200 space-y-4">
-            <div id="teacher-error" class="hidden bg-rose-50 text-rose-700 p-3 rounded-xl text-xs font-bold text-center border border-rose-200">
-                <i class="fa-solid fa-circle-exclamation ml-1"></i> اسم المستخدم أو كلمة المرور غير صحيحة!
-            </div>
-
-            <div>
-                <label class="block text-slate-700 font-bold text-xs mb-1.5">اسم المستخدم</label>
-                <input type="text" id="teacher-username" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none text-left font-bold text-slate-800 text-sm" dir="ltr" placeholder="admin123">
-            </div>
-
-            <div>
-                <label class="block text-slate-700 font-bold text-xs mb-1.5">كلمة المرور</label>
-                <input type="password" id="teacher-password" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none text-left font-bold text-slate-800 text-sm" dir="ltr" placeholder="••••••••">
-            </div>
-
-            <button type="submit" class="btn-game w-full bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-3.5 text-base font-black mt-2">
-                دخول لوحة التحكم <i class="fa-solid fa-lock-open mr-1"></i>
-            </button>
-        </form>
-    </div>
-
-    <!-- 4. لوحة تحكم المعلم الشاملة -->
-    <div id="screen-teacher-dashboard" class="screen">
-        <div class="flex justify-between items-center mb-3 pt-1 no-print">
-            <div>
-                <h2 class="text-xl font-black text-purple-800 flex items-center gap-1.5">
-                    <i class="fa-solid fa-chalkboard-user"></i> لوحة المعلم
-                </h2>
-                <p class="text-[11px] text-gray-500 font-bold">متابعة نشاط الطلاب وجداول الضرب</p>
-            </div>
-            <button onclick="logoutTeacher()" class="text-rose-600 bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-xl font-bold text-xs transition-colors border border-rose-200 flex items-center gap-1">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i> خروج
-            </button>
-        </div>
-
-        <!-- بطاقات ملخصة -->
-        <div class="grid grid-cols-3 gap-2 mb-3">
-            <div class="bg-purple-50 p-2.5 rounded-2xl border border-purple-200 text-center">
-                <div class="text-[10px] text-purple-700 font-bold">الطلاب المسجلين</div>
-                <div id="teacher-stat-students-count" class="text-xl font-black text-purple-900 leading-tight mt-0.5">٠</div>
-            </div>
-            <div class="bg-teal-50 p-2.5 rounded-2xl border border-teal-200 text-center">
-                <div class="text-[10px] text-teal-700 font-bold">إجمالي الأسئلة</div>
-                <div id="teacher-stat-solved-count" class="text-xl font-black text-teal-900 leading-tight mt-0.5">٠</div>
-            </div>
-            <div class="bg-emerald-50 p-2.5 rounded-2xl border border-emerald-200 text-center">
-                <div class="text-[10px] text-emerald-700 font-bold">معدل الإتقان</div>
-                <div id="teacher-stat-accuracy" class="text-xl font-black text-emerald-900 leading-tight mt-0.5">٠٪</div>
-            </div>
-        </div>
-
-        <!-- التبويبات -->
-        <div class="flex gap-2 mb-3 no-print">
-            <button id="tab-btn-logs" onclick="switchTeacherTab('logs')" class="flex-1 py-2 rounded-xl font-black text-xs bg-purple-600 text-white shadow-sm transition-all flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-clipboard-list"></i> سجل الجلسات
-            </button>
-            <button id="tab-btn-students" onclick="switchTeacherTab('students')" class="flex-1 py-2 rounded-xl font-black text-xs bg-slate-100 text-slate-600 hover:bg-purple-50 transition-all flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-users"></i> قائمة الطلاب
-            </button>
-        </div>
-
-        <!-- فلاتر وأدوات المعلم -->
-        <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-200 mb-3 space-y-2 no-print">
-            <div class="flex gap-2">
-                <div class="relative flex-1">
-                    <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-gray-400 text-xs"></i>
-                    <input type="text" id="teacher-search" oninput="renderTeacherDashboard()" placeholder="بحث باسم الطالب..." class="w-full pr-8 pl-2 py-1.5 text-xs rounded-xl border border-slate-200 focus:outline-none focus:border-purple-500 bg-white font-bold">
-                </div>
-                <select id="teacher-class-filter" onchange="renderTeacherDashboard()" class="py-1.5 px-2 text-xs font-bold rounded-xl border border-slate-200 bg-white text-slate-700 focus:outline-none">
-                    <option value="all">كل الفصول</option>
-                    <option value="رابع أ">رابع أ</option>
-                    <option value="رابع ب">رابع ب</option>
-                    <option value="رابع ج">رابع ج</option>
-                    <option value="خامس أ">خامس أ</option>
-                    <option value="خامس ب">خامس ب</option>
-                    <option value="خامس ج">خامس ج</option>
-                    <option value="سادس أ">سادس أ</option>
-                    <option value="سادس ب">سادس ب</option>
-                    <option value="سادس ج">سادس ج</option>
-                    <option value="أول متوسط أ">أول متوسط أ</option>
-                    <option value="أول متوسط ب">أول متوسط ب</option>
-                </select>
-            </div>
-            
-            <div class="flex flex-wrap gap-2 justify-between items-center pt-1 text-[11px]">
-                <div class="flex gap-1.5 flex-wrap">
-                    <button onclick="resetAllStudentAttempts()" class="text-amber-700 hover:text-amber-800 font-bold flex items-center gap-1 bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200 transition-colors">
-                        <i class="fa-solid fa-rotate-left"></i> تصفير المحاولات
-                    </button>
-                    <button onclick="exportTeacherDataCSV()" class="text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-lg border border-emerald-200 transition-colors" title="تصدير لملف إكسل">
-                        <i class="fa-solid fa-file-excel"></i> تصدير إكسل
-                    </button>
-                    <button onclick="clearAllTeacherData()" class="text-rose-700 hover:text-rose-800 font-bold flex items-center gap-1 bg-rose-50 hover:bg-rose-100 px-2.5 py-1 rounded-lg border border-rose-200 transition-colors" title="مسح جميع السجلات والبدء من جديد">
-                        <i class="fa-solid fa-trash-can"></i> مسح السجلات
-                    </button>
-                </div>
-                <button onclick="window.print()" class="text-slate-600 hover:text-slate-800 font-bold flex items-center gap-1 bg-white hover:bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 transition-colors">
-                    <i class="fa-solid fa-print"></i> طباعة
-                </button>
-            </div>
-        </div>
-
-        <!-- المحتوى القابل للتمرير -->
-        <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 flex-1 overflow-y-auto max-h-[58vh] mb-2 space-y-2">
-            <div id="teacher-view-logs" class="space-y-2.5"></div>
-            <div id="teacher-view-students" class="space-y-2 hidden"></div>
-        </div>
-    </div>
-
-    <!-- 5. شاشة الطالب الرئيسية -->
-    <div id="screen-home" class="screen justify-between py-5">
-        <div>
-            <!-- الترويسة -->
-            <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-100">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-teal-500 to-emerald-400 text-white flex items-center justify-center text-xl font-bold shadow-sm">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <div>
-                        <h2 id="welcome-message" class="text-base font-black text-slate-800">أهلاً بك يا بطل!</h2>
-                        <span id="class-message" class="text-xs font-bold text-teal-700 bg-teal-50 px-2.5 py-0.5 rounded-full inline-block mt-0.5">فصل: رابع أ</span>
-                    </div>
-                </div>
-                <button onclick="logoutStudent()" class="text-slate-400 hover:text-rose-500 p-2 rounded-xl transition-colors" title="تسجيل الخروج">
-                    <i class="fa-solid fa-arrow-right-from-bracket text-lg"></i>
-                </button>
-            </div>
-
-            <!-- بطاقة بطل اليوم -->
-            <div class="bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-400 p-4 rounded-2xl text-white shadow-md mb-4 relative overflow-hidden">
-                <div class="absolute -left-3 -bottom-3 text-white/20 text-6xl pointer-events-none">
-                    <i class="fa-solid fa-crown"></i>
-                </div>
-                <div class="flex justify-between items-center relative z-10">
-                    <div>
-                        <div class="text-[11px] font-bold text-amber-100 flex items-center gap-1">
-                            <i class="fa-solid fa-trophy"></i> بطل اليوم في المدرسة
-                        </div>
-                        <div id="top-today-name" class="text-xl font-black mt-0.5">خالد محمد</div>
-                    </div>
-                    <div class="text-left bg-white/25 backdrop-blur-sm px-3 py-1.5 rounded-xl border border-white/30 text-center">
-                        <span class="text-[10px] text-amber-100 font-bold block">أعلى نتيجة</span>
-                        <span id="top-today-score" class="text-lg font-black leading-none">٩٥٠</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- أنشطة اللعب والتدريب -->
-            <div class="space-y-3">
-                <!-- زر وضع التدريب المفتوح -->
-                <button onclick="navTo('practice-setup')" class="btn-game w-full bg-white border-2 border-teal-100 hover:border-teal-500 p-4 rounded-2xl flex items-center justify-between text-right shadow-sm group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-2xl group-hover:bg-teal-500 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-calculator"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-black text-slate-800 text-base">تدريب الجداول</h3>
-                            <p class="text-xs text-slate-500 font-bold">اختر الجداول من 1 إلى 10 وتدرب بحرية</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-left text-slate-300 group-hover:text-teal-600 transition-colors"></i>
-                </button>
-
-                <!-- زر تحدي السرعة -->
-                <button id="btn-speed-challenge" onclick="startSpeedMode()" class="btn-game w-full bg-gradient-to-r from-rose-500 to-red-600 hover:from-rose-600 hover:to-red-700 text-white p-4 rounded-2xl flex items-center justify-between text-right shadow-md">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-2xl">
-                            <i class="fa-solid fa-bolt"></i>
-                        </div>
-                        <div>
-                            <div class="flex items-center gap-2">
-                                <h3 class="font-black text-white text-base">تحدي السرعة</h3>
-                                <span class="bg-yellow-400 text-red-900 text-[10px] font-black px-2 py-0.5 rounded-full">٩٠ ثانية</span>
-                            </div>
-                            <p class="text-xs text-red-100 font-bold">٥٠ سؤال لقياس سرعة البديهة (٢٠٠ نقطة تؤهلك للشهادة 🎓)</p>
-                            <span id="attempts-display" class="text-[11px] font-black bg-white text-red-600 px-2.5 py-0.5 rounded-full mt-1.5 inline-block shadow-sm">المتبقي: ٣ محاولات</span>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-left text-white/50"></i>
-                </button>
-
-                <!-- زر لوحة الشرف -->
-                <button onclick="navTo('leaderboard')" class="btn-game w-full bg-white border-2 border-indigo-100 hover:border-indigo-400 p-4 rounded-2xl flex items-center justify-between text-right shadow-sm group">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl group-hover:bg-indigo-600 group-hover:text-white transition-colors">
-                            <i class="fa-solid fa-medal"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-black text-slate-800 text-base">لوحة الشرف 🏆</h3>
-                            <p class="text-xs text-slate-500 font-bold">ترتيب أفضل ١٠ أبطال في المدرسة</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-left text-slate-300 group-hover:text-indigo-600 transition-colors"></i>
-                </button>
-
-                <!-- زر الشهادة المكتسبة -->
-                <button id="btn-home-certificate" onclick="showCertificate()" class="btn-game w-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white p-3.5 rounded-2xl flex items-center justify-between text-right shadow-md hidden">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-award"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-black text-white text-sm">شهادة التميز الرياضي 🎓</h3>
-                            <p class="text-[11px] text-amber-100 font-bold">أنت متفوق! اضغط لعرض وطباعة شهادتك</p>
-                        </div>
-                    </div>
-                    <i class="fa-solid fa-chevron-left text-white/70"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 6. شاشة اختيار جداول التدريب -->
-    <div id="screen-practice-setup" class="screen justify-between py-6">
-        <div>
-            <div class="relative flex items-center justify-center mb-4">
-                <button onclick="navTo('home')" type="button" class="absolute right-0 text-slate-400 hover:text-slate-700 p-2 z-10 transition-colors">
-                    <i class="fa-solid fa-arrow-right text-xl"></i>
-                </button>
-                <h2 class="text-xl font-black text-slate-800">اختيار جداول التدريب</h2>
-            </div>
-            <p class="text-center text-xs text-slate-500 font-bold mb-4">اختر جدولاً أو أكثر للتدريب بحرية</p>
-
-            <!-- أدوات سريعة للاختيار -->
-            <div class="flex gap-2 mb-4">
-                <button onclick="selectAllTables(true)" class="flex-1 py-1.5 text-xs font-bold rounded-xl bg-teal-50 text-teal-700 border border-teal-200 hover:bg-teal-100 transition-colors">
-                    تحديد الكل
-                </button>
-                <button onclick="selectRangeTables(1, 5)" class="flex-1 py-1.5 text-xs font-bold rounded-xl bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition-colors">
-                    جداول ١ - ٥
-                </button>
-                <button onclick="selectRangeTables(6, 10)" class="flex-1 py-1.5 text-xs font-bold rounded-xl bg-slate-50 text-slate-700 border border-slate-200 hover:bg-slate-100 transition-colors">
-                    جداول ٦ - ١٠
-                </button>
-                <button onclick="selectAllTables(false)" class="py-1.5 px-3 text-xs font-bold rounded-xl bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition-colors">
-                    إلغاء
-                </button>
-            </div>
-
-            <!-- شبكة الجداول (من 1 إلى 10) -->
-            <div id="tables-grid" class="grid grid-cols-5 gap-2.5 mb-4"></div>
-
-            <div id="selected-tables-hint" class="text-center text-xs text-teal-700 font-bold mb-4">
-                لم يتم تحديد أي جدول بعد
-            </div>
-
-            <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs mb-4">
-                <label class="block text-slate-700 font-black text-xs mb-2 text-center">عدد أسئلة التدريب:</label>
-                <div class="grid grid-cols-3 gap-2">
-                    <button type="button" onclick="setPracticeQuestionCount(10)" id="qcount-10" class="py-2 rounded-xl font-black text-xs border-2 border-slate-200 text-slate-600 bg-slate-50 transition-all">١٠ أسئلة</button>
-                    <button type="button" onclick="setPracticeQuestionCount(20)" id="qcount-20" class="py-2 rounded-xl font-black text-xs border-2 border-teal-600 text-white bg-teal-600 shadow-xs transition-all">٢٠ سؤالاً</button>
-                    <button type="button" onclick="setPracticeQuestionCount(30)" id="qcount-30" class="py-2 rounded-xl font-black text-xs border-2 border-slate-200 text-slate-600 bg-slate-50 transition-all">٣٠ سؤالاً</button>
-                </div>
-            </div>
-        </div>
-
-        <div>
-            <button id="btn-start-practice" onclick="startPracticeMode()" disabled class="btn-game w-full bg-teal-600 hover:bg-teal-700 text-white rounded-2xl py-3.5 text-lg font-black flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
-                ابدأ التدريب <i class="fa-solid fa-play text-sm"></i>
-            </button>
-        </div>
-    </div>
-
-    <!-- 7. شاشة اللعب التفاعلية -->
-    <div id="screen-game" class="screen justify-between py-4">
-        <!-- شريط التحكم العلوي -->
-        <div>
-            <div class="flex justify-between items-center mb-3">
-                <button onclick="quitGame()" class="text-slate-500 hover:text-rose-600 font-bold text-xs bg-slate-100 hover:bg-rose-50 px-3 py-1.5 rounded-xl transition-colors border border-slate-200 flex items-center gap-1.5">
-                    <i class="fa-solid fa-door-open"></i> إنهاء وعودة
-                </button>
-
-                <div class="flex items-center gap-2">
-                    <button onclick="toggleAudioMute()" id="btn-audio-toggle" class="text-slate-500 hover:text-teal-600 text-xs bg-slate-100 px-2.5 py-1.5 rounded-xl border border-slate-200 transition-colors" title="كتم/تشغيل الصوت">
-                        <i class="fa-solid fa-volume-high"></i>
-                    </button>
-                    <span id="progress-display" class="text-xs font-black bg-slate-100 text-slate-700 px-2.5 py-1 rounded-xl border border-slate-200">
-                        ١/٢٠
-                    </span>
-                    <span class="text-xs font-black bg-amber-50 text-amber-700 px-3 py-1 rounded-xl border border-amber-200 flex items-center gap-1">
-                        <i class="fa-solid fa-star text-amber-500"></i>
-                        <span id="score-display">٠</span>
-                    </span>
-                    <button id="btn-submit-speed" onclick="submitSpeedChallenge()" class="hidden btn-game bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs px-3 py-1.5 rounded-xl flex items-center gap-1">
-                        تسليم النتيجة 🚀
-                    </button>
-                </div>
-            </div>
-
-            <!-- شريط الوقت وتحدي الـ 90 ثانية -->
-            <div id="time-bar-container" class="mb-3 hidden">
-                <div class="flex justify-between items-center text-xs font-bold mb-1">
-                    <span class="text-slate-500"><i class="fa-regular fa-clock ml-1"></i>الوقت المتبقي:</span>
-                    <span id="time-display" class="font-black text-rose-600">٩٠ ثانية</span>
-                </div>
-                <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
-                    <div id="time-bar" class="bg-rose-500 h-full rounded-full transition-all duration-1000 ease-linear" style="width: 100%;"></div>
-                </div>
-            </div>
-
-            <!-- مؤشر المتتاليات السريعة -->
-            <div class="h-6 flex items-center justify-center mb-1">
-                <span id="combo-display" class="text-xs font-black text-amber-600 bg-amber-50 border border-amber-200 px-3 py-0.5 rounded-full opacity-0 transition-opacity">
-                    متتالية سريعة! 🔥
-                </span>
-            </div>
-
-            <!-- بطاقة السؤال الرئيسي -->
-            <div class="bg-white border-2 border-teal-100 rounded-3xl p-6 text-center shadow-sm mb-4 relative">
-                <span class="text-xs text-slate-400 font-bold block mb-1">ما حاصل ضرب:</span>
-                <div id="question-text" class="text-4xl sm:text-5xl font-black text-slate-800 tracking-wide font-sans">
-                    ٧ × ٨
-                </div>
-            </div>
-
-            <!-- صندوق التلميح التعليمي عند الخطأ -->
-            <div id="hint-box" class="hidden bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold p-3 rounded-2xl mb-4 text-center">
-                تذكر: ٧ × ٨ = ٥٦
-            </div>
-
-            <!-- خيارات الإجابة الأربعة -->
-            <div class="grid grid-cols-2 gap-3 mb-2">
-                <button id="ans-0" onclick="checkAnswer(0)" class="btn-answer">٠</button>
-                <button id="ans-1" onclick="checkAnswer(1)" class="btn-answer">٠</button>
-                <button id="ans-2" onclick="checkAnswer(2)" class="btn-answer">٠</button>
-                <button id="ans-3" onclick="checkAnswer(3)" class="btn-answer">٠</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 8. شاشة النتائج والتغذية الراجعة -->
-    <div id="screen-result" class="screen justify-between py-6 text-center">
-        <div>
-            <div id="result-icon" class="text-5xl mb-2">
-                <i class="fa-solid fa-crown text-yellow-500"></i>
-            </div>
-            <h2 id="result-title" class="text-2xl font-black text-slate-800 mb-1">أنت بطل أسطوري! 🏆</h2>
-            <p id="result-subtitle" class="text-xs text-slate-500 font-bold mb-5">تم تسجيل نتيجتك بنجاح في سجلات المعلم</p>
-
-            <!-- بطاقات الإحصاءات -->
-            <div class="grid grid-cols-2 gap-2.5 mb-4">
-                <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
-                    <span class="text-xs text-slate-400 font-bold block">مجموع النقاط</span>
-                    <span id="final-score" class="text-2xl font-black text-teal-600">٠</span>
-                </div>
-                <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
-                    <span class="text-xs text-slate-400 font-bold block">نسبة الإتقان</span>
-                    <span id="final-accuracy" class="text-2xl font-black text-emerald-600">٠٪</span>
-                </div>
-                <div class="bg-emerald-50 p-3 rounded-2xl border border-emerald-100">
-                    <span class="text-xs text-emerald-600 font-bold block">إجابات صحيحة</span>
-                    <span id="final-correct" class="text-2xl font-black text-emerald-700">٠</span>
-                </div>
-                <div class="bg-rose-50 p-3 rounded-2xl border border-rose-100">
-                    <span class="text-xs text-rose-600 font-bold block">إجابات خاطئة</span>
-                    <span id="final-wrong" class="text-2xl font-black text-rose-700">٠</span>
-                </div>
-            </div>
-
-            <!-- الوقت المستغرق لتحدي السرعة -->
-            <div id="time-taken-container" class="bg-amber-50 border border-amber-200 p-2.5 rounded-2xl mb-4 hidden">
-                <span class="text-xs text-amber-700 font-bold">الوقت المستغرق في التحدي: </span>
-                <span id="final-time" class="text-base font-black text-amber-900">٠ ثانية</span>
-            </div>
-
-            <!-- قائمة العمليات الخاطئة -->
-            <div id="mistakes-container" class="text-right bg-slate-50 p-3.5 rounded-2xl mb-4 max-h-36 overflow-y-auto hidden border border-slate-200">
-                <h4 class="font-bold text-slate-700 text-xs mb-2 flex items-center gap-1">
-                    <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> عمليات تحتاج لمراجعتها:
-                </h4>
-                <ul id="mistakes-list" class="list-disc list-inside text-slate-600 space-y-1 font-bold text-xs"></ul>
-            </div>
-
-            <!-- زر الشهادة إذا حقق إتقاناً ممتازاً -->
-            <button id="btn-result-certificate" onclick="showCertificate()" class="btn-game w-full bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-2xl py-3 text-sm font-black flex items-center justify-center gap-2 mb-3 shadow-md hidden">
-                <i class="fa-solid fa-award"></i> عرض وطباعة شهادة التميز 🎓
-            </button>
-
-            <div class="flex gap-2 mb-3">
-                <button id="btn-retry-mistakes" onclick="startMistakesRetry()" class="btn-game flex-1 bg-rose-500 hover:bg-rose-600 text-white rounded-2xl py-2.5 text-xs font-black flex items-center justify-center gap-1.5 hidden">
-                    <i class="fa-solid fa-rotate"></i> تدرب على أخطائك
-                </button>
-                <button id="btn-play-again" onclick="replaySameMode()" class="btn-game flex-1 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl py-2.5 text-xs font-black flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-redo"></i> جولة أخرى
-                </button>
-            </div>
-        </div>
-
-        <div class="space-y-2">
-            <button onclick="navTo('home')" class="btn-game w-full bg-teal-600 hover:bg-teal-700 text-white rounded-2xl py-3.5 text-base font-black flex items-center justify-center gap-2 shadow-md">
-                <i class="fa-solid fa-house"></i> العودة للرئيسية
-            </button>
-            <button onclick="navTo('leaderboard')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-2xl py-2.5 text-xs font-black transition-colors">
-                عرض لوحة الشرف
-            </button>
-        </div>
-    </div>
-
-    <!-- 9. شاشة لوحة الشرف -->
-    <div id="screen-leaderboard" class="screen justify-between py-6">
-        <div>
-            <div class="relative flex items-center justify-center mb-3">
-                <button onclick="navTo('home')" type="button" class="absolute right-0 text-slate-400 hover:text-slate-700 p-2 z-10 transition-colors">
-                    <i class="fa-solid fa-arrow-right text-xl"></i>
-                </button>
-                <h2 class="text-xl font-black text-slate-800">لوحة الشرف 🏆</h2>
-            </div>
-            <p class="text-center text-xs text-slate-500 font-bold mb-4">أفضل ١٠ أبطال في تحدي السرعة (النقاط ثم الزمن)</p>
-
-            <div id="leaderboard-list" class="space-y-2 max-h-[60vh] overflow-y-auto mb-4"></div>
-        </div>
-
-        <button onclick="navTo('home')" class="btn-game w-full bg-teal-600 hover:bg-teal-700 text-white rounded-2xl py-3.5 text-base font-black flex items-center justify-center gap-2 shadow-md">
-            <i class="fa-solid fa-house"></i> العودة للرئيسية
-        </button>
-    </div>
-
-    <!-- 10. شاشة شهادة التميز القابلة للطباعة -->
-    <div id="screen-certificate" class="screen justify-between py-6">
-        <div class="no-print flex justify-between items-center mb-4">
-            <button onclick="navTo('home')" class="text-slate-500 hover:text-slate-800 font-bold text-xs bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 transition-colors">
-                <i class="fa-solid fa-arrow-right ml-1"></i> عودة
-            </button>
-            <button onclick="window.print()" class="btn-game bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5">
-                <i class="fa-solid fa-print"></i> طباعة الشهادة
-            </button>
-        </div>
-
-        <!-- وثيقة الشهادة الرسمية -->
-        <div class="bg-gradient-to-b from-amber-50 to-white border-8 border-double border-amber-300 p-6 rounded-3xl text-center shadow-lg relative my-auto">
-            <div class="w-16 h-16 bg-gradient-to-tr from-amber-400 to-yellow-500 text-white rounded-full flex items-center justify-center mx-auto mb-3 text-2xl shadow-md">
-                <i class="fa-solid fa-award"></i>
-            </div>
-            <span class="text-xs font-bold text-amber-800 block mb-1">المملكة العربية السعودية • وزارة التعليم</span>
-            <h3 class="text-sm font-black text-slate-700 mb-1">مدرسة السعودية بالقنفذة</h3>
-            <h1 class="text-2xl font-black text-amber-600 mb-4 border-b-2 border-amber-200 pb-2">شهادة تميز في جدول الضرب</h1>
-
-            <p class="text-xs text-slate-600 font-bold leading-relaxed mb-4">
-                تسر مدرسة السعودية بالقنفذة أن تمنح هذه الشهادة للبطل الرياضي:
-            </p>
-
-            <div id="cert-student-name" class="text-2xl font-black text-slate-900 bg-white py-2 px-4 rounded-xl border border-amber-200 shadow-sm inline-block mb-3 min-w-[220px]">
-                اسم الطالب
-            </div>
-
-            <p class="text-xs text-slate-600 font-bold leading-relaxed mb-4">
-                بالصف: <span id="cert-student-class" class="text-teal-700 font-black">رابع أ</span> <br>
-                نظير تميزه الباهر وحصوله على نسبة إتقان <span id="cert-accuracy" class="text-emerald-600 font-black">٩٥٪</span> وبمجموع نقاط <span id="cert-score" class="text-amber-600 font-black">٩٠٠</span> نقطة في منافسات جدول الضرب.
-            </p>
-
-            <div class="grid grid-cols-2 items-center text-[10px] text-slate-500 font-bold pt-4 border-t border-amber-200 gap-2">
-                <div class="text-right">الجهة المانحة:<br><span class="text-slate-800 font-black">قسم الرياضيات - ابتدائية السعودية بالقنفذة</span></div>
-                <div class="text-left">التاريخ:<br><span id="cert-date" class="text-slate-800 font-black">اليوم</span></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- تذييل الصفحة العام -->
-    <footer class="no-print mt-auto py-3 px-4 bg-white/90 border-t border-slate-200/80 text-center">
-        <div class="flex items-center justify-center text-xs font-bold text-slate-600">
-            <span class="text-teal-700 font-black">قسم الرياضيات - ابتدائية السعودية بالقنفذة</span>
-        </div>
-    </footer>
+<section id="certs" class="s">
+<div class="row sp np"><button class="b gr sm" data-go="home" style="flex:0">عودة</button><button class="b g sm" data-act="print" style="flex:0">🖨 طباعة</button></div>
+<div class="cert">
+<div style="font-size:2.5rem">🏅</div><div style="font-size:.75rem;font-weight:700;color:#92400e">المملكة العربية السعودية • وزارة التعليم</div>
+<b>مدرسة السعودية بالقنفذة</b>
+<h1 style="font-size:1.5rem;color:#d97706;border-bottom:2px solid #fde68a;padding:8px 0 10px;margin-bottom:12px">شهادة تميز في جدول الضرب</h1>
+<p style="font-size:.8rem;font-weight:700">تسر المدرسة أن تمنح هذه الشهادة للبطل:</p>
+<div class="nm" id="cn"></div>
+<p style="font-size:.8rem;font-weight:700;line-height:1.9">بالصف: <b id="cc" style="color:#0f766e"></b><br>نظير تميزه وحصوله على نسبة إتقان <b id="ca" style="color:#059669"></b> وبمجموع <b id="cs" style="color:#d97706"></b> نقطة في تحدي جدول الضرب.</p>
+<div class="row sp" style="font-size:.7rem;font-weight:700;border-top:1px solid #fde68a;padding-top:10px"><div style="text-align:right">الجهة المانحة:<br><b>قسم الرياضيات - ابتدائية السعودية بالقنفذة</b></div><div style="text-align:left">التاريخ:<br><b id="cd"></b></div></div>
+</div>
+</section>
+<footer>قسم الرياضيات - ابتدائية السعودية بالقنفذة</footer>
 </div>
 
-<script>
-    const NUMBERS_AR = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
-    let audioCtx = null;
-    let isAudioMuted = false;
-    let toastTimeout = null;
-    let confirmCallback = null;
-
-    // قاعدة البيانات الافتراضية
-    const defaultDB = {
-        students: {
-            'خالد محمد الزهراني': { class: 'سادس أ', attempts: 1, bestScore: 950, bestAccuracy: 95, totalSolved: 75, totalCorrect: 71, totalWrong: 4, lastActive: 'اليوم ١١:٠٠ ص', certified: true },
-            'عمر عبدالله القحطاني': { class: 'خامس ب', attempts: 2, bestScore: 820, bestAccuracy: 92, totalSolved: 50, totalCorrect: 46, totalWrong: 4, lastActive: 'اليوم ١٠:١٥ ص', certified: true },
-            'سالم علي المرحبي': { class: 'رابع أ', attempts: 2, bestScore: 640, bestAccuracy: 88, totalSolved: 35, totalCorrect: 31, totalWrong: 4, lastActive: 'اليوم ٠٩:٣٠ ص', certified: false }
-        },
-        practiceLogs: [
-            {
-                id: 1,
-                name: 'خالد محمد الزهراني',
-                class: 'سادس أ',
-                tablesText: 'جدول ٧، ٨',
-                totalAnswered: 20,
-                correct: 19,
-                wrong: 1,
-                timeSpent: 48,
-                timestamp: '١١:٠٠ ص',
-                type: 'تدريب'
-            },
-            {
-                id: 2,
-                name: 'عمر عبدالله القحطاني',
-                class: 'خامس ب',
-                tablesText: 'جدول ٦',
-                totalAnswered: 20,
-                correct: 18,
-                wrong: 2,
-                timeSpent: 55,
-                timestamp: '١٠:١٥ ص',
-                type: 'تدريب'
-            },
-            {
-                id: 3,
-                name: 'سالم علي المرحبي',
-                class: 'رابع أ',
-                tablesText: 'جدول ٤، ٥',
-                totalAnswered: 15,
-                correct: 13,
-                wrong: 2,
-                timeSpent: 42,
-                timestamp: '٠٩:٣٠ ص',
-                type: 'تدريب'
-            }
-        ],
-        leaderboard: [
-            { name: 'خالد محمد الزهراني', class: 'سادس أ', score: 950, timeTaken: 65 },
-            { name: 'عمر عبدالله القحطاني', class: 'خامس ب', score: 820, timeTaken: 78 },
-            { name: 'سالم علي المرحبي', class: 'رابع أ', score: 640, timeTaken: 84 }
-        ]
-    };
-
-    let mockDB = loadDB();
-
-    function loadDB() {
-        try {
-            const saved = localStorage.getItem('abtal_aldarb_db_v3');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                if (parsed && parsed.students && parsed.practiceLogs && parsed.leaderboard) {
-                    return parsed;
-                }
-            }
-        } catch (e) {
-            console.warn('Storage read error:', e);
-        }
-        return JSON.parse(JSON.stringify(defaultDB));
-    }
-
-    function saveDB() {
-        try {
-            localStorage.setItem('abtal_aldarb_db_v3', JSON.stringify(mockDB));
-        } catch (e) {
-            console.warn('Storage write error:', e);
-        }
-    }
-
-    const state = {
-        mode: 'welcome',
-        currentUser: null,
-        selectedTables: new Set(),
-        practiceQuestionCount: 20,
-        questions: [],
-        currentIndex: 0,
-        score: 0,
-        combo: 0,
-        timeLeft: 0,
-        totalTime: 0,
-        sessionStartTime: 0,
-        sessionLogged: false,
-        timerInterval: null,
-        nextTimeout: null,
-        isAnswered: false,
-        currentTeacherTab: 'logs',
-        stats: { correct: 0, wrong: 0, mistakesList: [], rawMistakes: [] }
-    };
-
-    function escapeHTML(str) {
-        if (!str) return '';
-        return String(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
-    }
-
-    function showToast(message, type = 'success') {
-        const toastBox = document.getElementById('toast-box');
-        const toastMsg = document.getElementById('toast-message');
-        const toastIcon = document.getElementById('toast-icon');
-        if (!toastBox || !toastMsg) return;
-
-        toastMsg.innerText = message;
-        if (type === 'error') {
-            toastIcon.className = 'fa-solid fa-circle-exclamation text-rose-400 text-base';
-        } else if (type === 'info') {
-            toastIcon.className = 'fa-solid fa-circle-info text-amber-400 text-base';
-        } else {
-            toastIcon.className = 'fa-solid fa-circle-check text-emerald-400 text-base';
-        }
-
-        toastBox.classList.add('show');
-        if (toastTimeout) clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(() => {
-            toastBox.classList.remove('show');
-        }, 2800);
-    }
-
-    function openConfirmModal(title, message, onConfirm) {
-        const modal = document.getElementById('confirm-modal');
-        const titleEl = document.getElementById('confirm-title');
-        const msgEl = document.getElementById('confirm-message');
-        const yesBtn = document.getElementById('confirm-yes-btn');
-        if (!modal) return;
-
-        titleEl.innerText = title;
-        msgEl.innerText = message;
-        confirmCallback = onConfirm;
-        yesBtn.onclick = () => {
-            if (confirmCallback) confirmCallback();
-            closeConfirmModal();
-        };
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-    }
-
-    function closeConfirmModal() {
-        const modal = document.getElementById('confirm-modal');
-        if (modal) {
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-        confirmCallback = null;
-    }
-
-    function toArNum(num) {
-        if (num === undefined || num === null) return '٠';
-        return num.toString().split('').map(char => {
-            if (char >= '0' && char <= '9') return NUMBERS_AR[parseInt(char)];
-            return char;
-        }).join('');
-    }
-
-    function shuffleArray(array) {
-        const arr = [...array];
-        for (let i = arr.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [arr[i], arr[j]] = [arr[j], arr[i]];
-        }
-        return arr;
-    }
-
-    function initAudio() {
-        try {
-            if (!audioCtx) {
-                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                if (AudioContextClass) audioCtx = new AudioContextClass();
-            }
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        } catch (e) {
-            console.warn('Audio init bypassed:', e);
-        }
-    }
-
-    function toggleAudioMute() {
-        isAudioMuted = !isAudioMuted;
-        const btn = document.getElementById('btn-audio-toggle');
-        if (btn) {
-            btn.innerHTML = isAudioMuted 
-                ? '<i class="fa-solid fa-volume-xmark text-rose-500"></i>' 
-                : '<i class="fa-solid fa-volume-high"></i>';
-        }
-    }
-
-    function playSound(type) {
-        if (isAudioMuted) return;
-        initAudio();
-        if (!audioCtx) return;
-        try {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            const now = audioCtx.currentTime;
-            
-            if (type === 'correct') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(580, now);
-                osc.frequency.exponentialRampToValueAtTime(1100, now + 0.12);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
-                osc.start(now);
-                osc.stop(now + 0.22);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(320, now);
-                osc.frequency.exponentialRampToValueAtTime(140, now + 0.2);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
-                osc.start(now);
-                osc.stop(now + 0.22);
-            } else if (type === 'end') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(440, now);
-                osc.frequency.setValueAtTime(660, now + 0.12);
-                osc.frequency.setValueAtTime(880, now + 0.25);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0.01, now + 0.45);
-                osc.start(now);
-                osc.stop(now + 0.45);
-            }
-        } catch (e) {
-            console.warn('Sound play bypassed:', e);
-        }
-    }
-
-    function navTo(screenId) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        const target = document.getElementById(`screen-${screenId}`);
-        if (target) {
-            target.classList.add('active');
-        }
-        
-        if (screenId === 'home') updateHomeUI();
-        if (screenId === 'leaderboard') renderLeaderboard();
-        if (screenId === 'teacher-dashboard') renderTeacherDashboard();
-        if (screenId === 'practice-setup') renderTableSelection();
-    }
-
-    function logoutStudent() {
-        state.currentUser = null;
-        navTo('welcome');
-    }
-
-    function logoutTeacher() {
-        navTo('welcome');
-    }
-
-    function handleStudentLogin(event) {
-        event.preventDefault();
-        const nameInput = document.getElementById('student-name');
-        const classSelect = document.getElementById('student-class');
-        const rawName = nameInput ? nameInput.value.trim().replace(/\s+/g, ' ') : '';
-        const studentClass = classSelect ? classSelect.value : 'رابع أ';
-        
-        if (!rawName || rawName.length < 2) {
-            showToast('يرجى إدخال اسم الطالب بشكل صحيح', 'error');
-            return;
-        }
-
-        if (!mockDB.students[rawName]) {
-            mockDB.students[rawName] = { 
-                class: studentClass, 
-                attempts: 3, 
-                bestScore: 0,
-                bestAccuracy: 0,
-                totalSolved: 0,
-                totalCorrect: 0,
-                totalWrong: 0,
-                lastActive: 'الآن',
-                certified: false
-            };
-        } else {
-            mockDB.students[rawName].lastActive = 'الآن';
-            mockDB.students[rawName].class = studentClass;
-            if (mockDB.students[rawName].attempts === undefined) {
-                mockDB.students[rawName].attempts = 3;
-            }
-        }
-        saveDB();
-
-        state.currentUser = { role: 'student', name: rawName, class: studentClass };
-        
-        const welcomeMsg = document.getElementById('welcome-message');
-        if (welcomeMsg) welcomeMsg.innerText = `أهلاً بك يا بطل ${rawName}!`;
-        const classMsg = document.getElementById('class-message');
-        if (classMsg) classMsg.innerText = `فصل: ${studentClass}`;
-        
-        if (nameInput) nameInput.value = '';
-        navTo('home');
-    }
-
-    function handleTeacherLogin(event) {
-        event.preventDefault();
-        const user = document.getElementById('teacher-username').value.trim();
-        const pass = document.getElementById('teacher-password').value.trim();
-        const errorDiv = document.getElementById('teacher-error');
-        
-        if (user.toLowerCase() === 'admin123' && pass === '0509322125') {
-            errorDiv.classList.add('hidden');
-            document.getElementById('teacher-username').value = '';
-            document.getElementById('teacher-password').value = '';
-            navTo('teacher-dashboard');
-        } else {
-            errorDiv.classList.remove('hidden');
-            errorDiv.classList.add('animate-shake');
-            setTimeout(() => errorDiv.classList.remove('animate-shake'), 500);
-        }
-    }
-
-    function updateHomeUI() {
-        if (!state.currentUser) return;
-        const student = mockDB.students[state.currentUser.name];
-        const btnSpeed = document.getElementById('btn-speed-challenge');
-        const attemptsDisplay = document.getElementById('attempts-display');
-        const topName = document.getElementById('top-today-name');
-        const topScore = document.getElementById('top-today-score');
-        const homeCertBtn = document.getElementById('btn-home-certificate');
-
-        // تحديث بطل اليوم
-        if (mockDB.leaderboard && mockDB.leaderboard.length > 0) {
-            const sortedLeaderboard = [...mockDB.leaderboard].sort((a, b) => {
-                if (b.score !== a.score) return b.score - a.score;
-                return (a.timeTaken || 0) - (b.timeTaken || 0);
-            });
-            const topStudent = sortedLeaderboard[0];
-            if (topName) topName.innerText = topStudent.name;
-            if (topScore) topScore.innerText = toArNum(topStudent.score);
-        } else {
-            if (topName) topName.innerText = "كن أول بطل يشارك!";
-            if (topScore) topScore.innerText = "٠";
-        }
-
-        // تحديث محاولات تحدي السرعة
-        if (attemptsDisplay && btnSpeed) {
-            const rem = student ? (student.attempts ?? 3) : 3;
-            if (rem > 0) {
-                attemptsDisplay.innerText = `المتبقي: ${toArNum(rem)} محاولات`;
-                attemptsDisplay.className = 'text-[11px] font-black bg-white text-rose-600 px-2.5 py-0.5 rounded-full mt-1.5 inline-block shadow-sm';
-                btnSpeed.disabled = false;
-            } else {
-                attemptsDisplay.innerText = 'استنفدت المحاولات الثلاث!';
-                attemptsDisplay.className = 'text-[11px] font-bold bg-slate-200 text-slate-600 px-2.5 py-0.5 rounded-full mt-1.5 inline-block';
-                btnSpeed.disabled = true;
-            }
-        }
-
-        // إظهار زر الشهادة إن كان مستحقاً
-        if (homeCertBtn) {
-            if (student && student.certified) {
-                homeCertBtn.classList.remove('hidden');
-            } else {
-                homeCertBtn.classList.add('hidden');
-            }
-        }
-    }
-
-    function switchTeacherTab(tabName) {
-        state.currentTeacherTab = tabName;
-        const btnLogs = document.getElementById('tab-btn-logs');
-        const btnStudents = document.getElementById('tab-btn-students');
-        const viewLogs = document.getElementById('teacher-view-logs');
-        const viewStudents = document.getElementById('teacher-view-students');
-
-        if (tabName === 'logs') {
-            btnLogs.className = 'flex-1 py-2 rounded-xl font-black text-xs bg-purple-600 text-white shadow-sm transition-all flex items-center justify-center gap-1.5';
-            btnStudents.className = 'flex-1 py-2 rounded-xl font-black text-xs bg-slate-100 text-slate-600 hover:bg-purple-50 transition-all flex items-center justify-center gap-1.5';
-            viewLogs.classList.remove('hidden');
-            viewStudents.classList.add('hidden');
-        } else {
-            btnStudents.className = 'flex-1 py-2 rounded-xl font-black text-xs bg-purple-600 text-white shadow-sm transition-all flex items-center justify-center gap-1.5';
-            btnLogs.className = 'flex-1 py-2 rounded-xl font-black text-xs bg-slate-100 text-slate-600 hover:bg-purple-50 transition-all flex items-center justify-center gap-1.5';
-            viewStudents.classList.remove('hidden');
-            viewLogs.classList.add('hidden');
-        }
-        renderTeacherDashboard();
-    }
-
-    function renderTeacherDashboard() {
-        const searchQuery = (document.getElementById('teacher-search')?.value || '').trim().toLowerCase();
-        const classFilter = document.getElementById('teacher-class-filter')?.value || 'all';
-
-        const allStudentsNames = Object.keys(mockDB.students);
-        let totalQuestionsAnswered = 0;
-        let totalCorrectAll = 0;
-
-        allStudentsNames.forEach(name => {
-            const st = mockDB.students[name];
-            totalQuestionsAnswered += (st.totalSolved || 0);
-            totalCorrectAll += (st.totalCorrect || 0);
-        });
-
-        const overallAccuracy = totalQuestionsAnswered > 0 
-            ? Math.round((totalCorrectAll / totalQuestionsAnswered) * 100) 
-            : 0;
-
-        const countEl = document.getElementById('teacher-stat-students-count');
-        const solvedEl = document.getElementById('teacher-stat-solved-count');
-        const accEl = document.getElementById('teacher-stat-accuracy');
-
-        if (countEl) countEl.innerText = toArNum(allStudentsNames.length);
-        if (solvedEl) solvedEl.innerText = toArNum(totalQuestionsAnswered);
-        if (accEl) accEl.innerText = `${toArNum(overallAccuracy)}٪`;
-
-        // سجل الجلسات المفصل
-        const logsContainer = document.getElementById('teacher-view-logs');
-        if (logsContainer) {
-            logsContainer.innerHTML = '';
-            const filteredLogs = mockDB.practiceLogs.filter(log => {
-                const matchName = log.name.toLowerCase().includes(searchQuery);
-                const matchClass = classFilter === 'all' || log.class === classFilter;
-                return matchName && matchClass;
-            });
-
-            if (filteredLogs.length === 0) {
-                logsContainer.innerHTML = `
-                    <div class="text-center py-8 text-slate-400">
-                        <i class="fa-solid fa-clipboard-question text-3xl mb-2 opacity-50"></i>
-                        <p class="font-bold text-xs">لا توجد سجلات تدريب مطابقة للبحث</p>
-                    </div>
-                `;
-            } else {
-                filteredLogs.forEach(log => {
-                    const card = document.createElement('div');
-                    card.className = 'p-3 rounded-2xl border border-slate-100 bg-slate-50/80 hover:bg-white hover:shadow-sm transition-all space-y-2';
-                    const badgeColor = log.type === 'تحدي سرعة' ? 'bg-rose-100 text-rose-700' : 'bg-teal-100 text-teal-700';
-                    card.innerHTML = `
-                        <div class="flex justify-between items-start border-b border-slate-200/60 pb-2">
-                            <div>
-                                <div class="font-black text-slate-800 text-xs flex items-center gap-1.5 flex-wrap">
-                                    <i class="fa-solid fa-user-graduate text-purple-600 text-[10px]"></i>
-                                    <span>${escapeHTML(log.name)}</span>
-                                    <span class="bg-purple-100 text-purple-700 text-[9px] px-2 py-0.5 rounded-full font-black">${escapeHTML(log.class)}</span>
-                                    <span class="${badgeColor} text-[9px] px-2 py-0.5 rounded-full font-black">${escapeHTML(log.type || 'تدريب')}</span>
-                                </div>
-                                <div class="text-[11px] text-teal-700 font-bold mt-1 flex items-center gap-1">
-                                    <i class="fa-solid fa-table text-teal-600"></i> ${escapeHTML(log.tablesText)}
-                                </div>
-                            </div>
-                            <div class="text-left flex items-start gap-2">
-                                <div>
-                                    <span class="text-[9px] text-slate-400 font-bold block">${escapeHTML(log.timestamp)}</span>
-                                    <span class="inline-block bg-amber-100 text-amber-800 text-[9px] font-black px-2 py-0.5 rounded-md mt-0.5">
-                                        <i class="fa-regular fa-clock"></i> ${toArNum(log.timeSpent)} ثانية
-                                    </span>
-                                </div>
-                                <button onclick="deleteSingleLog(${Number(log.id)})" class="no-print text-slate-300 hover:text-rose-500 p-1 transition-colors" title="حذف هذا السجل">
-                                    <i class="fa-solid fa-xmark text-xs"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-1.5 text-center text-xs pt-0.5">
-                            <div class="bg-white p-1 rounded-xl border border-slate-100">
-                                <span class="text-[9px] text-slate-400 font-bold block">الأسئلة</span>
-                                <span class="font-black text-slate-700 text-xs">${toArNum(log.totalAnswered)}</span>
-                            </div>
-                            <div class="bg-emerald-50 p-1 rounded-xl border border-emerald-100">
-                                <span class="text-[9px] text-emerald-600 font-bold block">الصحيحة</span>
-                                <span class="font-black text-emerald-700 text-xs">${toArNum(log.correct)} <i class="fa-solid fa-check text-[9px]"></i></span>
-                            </div>
-                            <div class="bg-rose-50 p-1 rounded-xl border border-rose-100">
-                                <span class="text-[9px] text-rose-600 font-bold block">الخاطئة</span>
-                                <span class="font-black text-rose-700 text-xs">${toArNum(log.wrong)} <i class="fa-solid fa-xmark text-[9px]"></i></span>
-                            </div>
-                        </div>
-                    `;
-                    logsContainer.appendChild(card);
-                });
-            }
-        }
-
-        // قائمة الطلاب المسجلين
-        const studentsContainer = document.getElementById('teacher-view-students');
-        if (studentsContainer) {
-            studentsContainer.innerHTML = '';
-            const filteredStudents = allStudentsNames.filter(name => {
-                const st = mockDB.students[name];
-                const matchName = name.toLowerCase().includes(searchQuery);
-                const matchClass = classFilter === 'all' || st.class === classFilter;
-                return matchName && matchClass;
-            });
-
-            if (filteredStudents.length === 0) {
-                studentsContainer.innerHTML = `
-                    <div class="text-center py-8 text-slate-400">
-                        <i class="fa-solid fa-users-slash text-3xl mb-2 opacity-50"></i>
-                        <p class="font-bold text-xs">لا يوجد طلاب مطابقون للبحث</p>
-                    </div>
-                `;
-            } else {
-                filteredStudents.forEach(name => {
-                    const st = mockDB.students[name];
-                    const row = document.createElement('div');
-                    row.className = 'p-3 rounded-2xl border border-slate-200 bg-slate-50 flex justify-between items-center';
-                    
-                    const infoDiv = document.createElement('div');
-                    infoDiv.innerHTML = `
-                        <div class="font-black text-slate-800 text-xs flex items-center gap-1.5">
-                            <span>${escapeHTML(name)}</span>
-                            ${st.certified ? '<i class="fa-solid fa-award text-amber-500 text-xs" title="حاصل على شهادة"></i>' : ''}
-                        </div>
-                        <div class="text-[10px] text-slate-500 font-bold mt-0.5">
-                            ${escapeHTML(st.class)} • محاولات السرعة: <span class="font-black text-purple-700">${toArNum(st.attempts ?? 3)}</span> • أنجز ${toArNum(st.totalSolved || 0)} سؤال
-                        </div>
-                    `;
-
-                    const actionsDiv = document.createElement('div');
-                    actionsDiv.className = 'flex items-center gap-1.5 no-print';
-
-                    const resetBtn = document.createElement('button');
-                    resetBtn.className = 'text-amber-700 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 p-2 rounded-xl text-xs font-bold border border-amber-200 transition-colors';
-                    resetBtn.title = 'إعادة تعيين المحاولات إلى ٣';
-                    resetBtn.innerHTML = '<i class="fa-solid fa-rotate-left"></i>';
-                    resetBtn.onclick = () => resetSingleStudentAttempts(name);
-
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 p-2 rounded-xl text-xs font-bold border border-rose-200 transition-colors';
-                    deleteBtn.title = 'حذف الطالب';
-                    deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-                    deleteBtn.onclick = () => deleteStudentRecord(name);
-
-                    actionsDiv.appendChild(resetBtn);
-                    actionsDiv.appendChild(deleteBtn);
-
-                    row.appendChild(infoDiv);
-                    row.appendChild(actionsDiv);
-                    studentsContainer.appendChild(row);
-                });
-            }
-        }
-    }
-
-    function resetAllStudentAttempts() {
-        Object.keys(mockDB.students).forEach(name => {
-            mockDB.students[name].attempts = 3;
-        });
-        saveDB();
-        renderTeacherDashboard();
-        showToast('تم تصفير وإعادة المحاولات (٣ محاولات) لجميع الطلاب بنجاح');
-    }
-
-    function resetSingleStudentAttempts(name) {
-        if (mockDB.students[name]) {
-            mockDB.students[name].attempts = 3;
-            saveDB();
-            renderTeacherDashboard();
-            showToast(`تم منح ٣ محاولات جديدة للطالب: ${name}`);
-        }
-    }
-
-    function deleteSingleLog(logId) {
-        mockDB.practiceLogs = mockDB.practiceLogs.filter(l => l.id !== logId);
-        saveDB();
-        renderTeacherDashboard();
-        showToast('تم حذف سجل الجلسة', 'info');
-    }
-
-    function deleteStudentRecord(name) {
-        openConfirmModal(
-            'حذف بيانات الطالب',
-            `هل تريد حذف الطالب (${name}) وجميع سجلاته من النظام؟`,
-            () => {
-                delete mockDB.students[name];
-                mockDB.practiceLogs = mockDB.practiceLogs.filter(l => l.name !== name);
-                mockDB.leaderboard = mockDB.leaderboard.filter(l => l.name !== name);
-                saveDB();
-                renderTeacherDashboard();
-                showToast(`تم حذف الطالب ${name} بنجاح`, 'info');
-            }
-        );
-    }
-
-    function clearAllTeacherData() {
-        openConfirmModal(
-            'مسح جميع السجلات والبيانات',
-            'سيتم مسح جميع الطلاب الحاليين وسجلات التدريب ولوحة الشرف للبدء من جديد. هل أنت متأكد؟',
-            () => {
-                mockDB = { students: {}, practiceLogs: [], leaderboard: [] };
-                saveDB();
-                renderTeacherDashboard();
-                showToast('تم مسح جميع السجلات والبيانات بنجاح');
-            }
-        );
-    }
-
-    function exportTeacherDataCSV() {
-        if (!mockDB.practiceLogs || mockDB.practiceLogs.length === 0) {
-            showToast('لا توجد سجلات حالياً لتصديرها', 'error');
-            return;
-        }
-
-        let csvContent = "\uFEFF"; // UTF-8 BOM
-        csvContent += "اسم الطالب,الفصل,نوع الجلسة,الجداول,الأسئلة,الإجابات الصحيحة,الإجابات الخاطئة,الوقت المستغرق (ثواني),التاريخ والوقت\n";
-
-        mockDB.practiceLogs.forEach(log => {
-            const row = [
-                `"${log.name}"`,
-                `"${log.class}"`,
-                `"${log.type || 'تدريب'}"`,
-                `"${log.tablesText}"`,
-                log.totalAnswered,
-                log.correct,
-                log.wrong,
-                log.timeSpent,
-                `"${log.timestamp}"`
-            ];
-            csvContent += row.join(",") + "\n";
-        });
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", `تقرير_مدرسة_السعودية_جدول_الضرب_${Date.now()}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }
-
-    function renderTableSelection() {
-        const grid = document.getElementById('tables-grid');
-        const hintEl = document.getElementById('selected-tables-hint');
-        if (!grid) return;
-        grid.innerHTML = '';
-        
-        // الجداول من 1 إلى 10
-        for (let i = 1; i <= 10; i++) {
-            const btn = document.createElement('button');
-            const isSelected = state.selectedTables.has(i);
-            btn.className = isSelected 
-                ? 'bg-teal-600 text-white border-2 border-teal-600 font-black py-3 rounded-2xl text-lg shadow-sm transition-all'
-                : 'bg-white text-slate-700 border-2 border-slate-200 font-black py-3 rounded-2xl text-lg hover:border-teal-400 shadow-sm transition-all';
-            btn.innerText = toArNum(i);
-            btn.onclick = () => toggleTable(i, btn);
-            grid.appendChild(btn);
-        }
-
-        if (hintEl) {
-            const count = state.selectedTables.size;
-            hintEl.innerText = count > 0 
-                ? `تم تحديد (${toArNum(count)}) جدول للتدريب`
-                : 'اختر جدولاً أو أكثر من المربعات أعلاه';
-        }
-        updatePracticeButtonState();
-    }
-
-    function toggleTable(num, btnElement) {
-        if (state.selectedTables.has(num)) {
-            state.selectedTables.delete(num);
-            btnElement.className = 'bg-white text-slate-700 border-2 border-slate-200 font-black py-3 rounded-2xl text-lg hover:border-teal-400 shadow-sm transition-all';
-        } else {
-            state.selectedTables.add(num);
-            btnElement.className = 'bg-teal-600 text-white border-2 border-teal-600 font-black py-3 rounded-2xl text-lg shadow-sm transition-all';
-        }
-        
-        const hintEl = document.getElementById('selected-tables-hint');
-        if (hintEl) {
-            const count = state.selectedTables.size;
-            hintEl.innerText = count > 0 
-                ? `تم تحديد (${toArNum(count)}) جدول للتدريب` 
-                : 'اختر جدولاً أو أكثر من المربعات أعلاه';
-        }
-        updatePracticeButtonState();
-    }
-
-    function selectAllTables(select) {
-        if (select) {
-            for (let i = 1; i <= 10; i++) state.selectedTables.add(i);
-        } else {
-            state.selectedTables.clear();
-        }
-        renderTableSelection();
-    }
-
-    function selectRangeTables(start, end) {
-        state.selectedTables.clear();
-        for (let i = start; i <= end; i++) state.selectedTables.add(i);
-        renderTableSelection();
-    }
-
-    function setPracticeQuestionCount(count) {
-        state.practiceQuestionCount = count;
-        [10, 20, 30].forEach(num => {
-            const btn = document.getElementById(`qcount-${num}`);
-            if (!btn) return;
-            if (num === count) {
-                btn.className = 'py-2 rounded-xl font-black text-xs border-2 border-teal-600 text-white bg-teal-600 shadow-xs transition-all';
-            } else {
-                btn.className = 'py-2 rounded-xl font-black text-xs border-2 border-slate-200 text-slate-600 bg-slate-50 transition-all';
-            }
-        });
-    }
-
-    function updatePracticeButtonState() {
-        const startBtn = document.getElementById('btn-start-practice');
-        if (!startBtn) return;
-        if (state.selectedTables.size > 0) {
-            startBtn.disabled = false;
-            startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-        } else {
-            startBtn.disabled = true;
-            startBtn.classList.add('opacity-50', 'cursor-not-allowed');
-        }
-    }
-
-    function generateQuestions(mode, tablesArray, count) {
-        let pool = [];
-
-        if (mode === 'speed') {
-            for (let i = 2; i <= 10; i++) {
-                for (let j = 2; j <= 10; j++) {
-                    pool.push({ num1: i, num2: j });
-                }
-            }
-        } else {
-            const tables = tablesArray.length > 0 ? tablesArray : [2, 3, 4, 5];
-            tables.forEach(t => {
-                for (let i = 1; i <= 10; i++) {
-                    pool.push({ num1: t, num2: i });
-                }
-            });
-        }
-
-        pool = shuffleArray(pool);
-        if (pool.length < count) {
-            while (pool.length < count) {
-                pool = pool.concat(shuffleArray(pool));
-            }
-        }
-
-        return pool.slice(0, count).map(q => {
-            const correctAnswer = q.num1 * q.num2;
-            const options = new Set([correctAnswer]);
-            let safety = 0;
-
-            while (options.size < 4 && safety++ < 60) {
-                const multiplier = Math.random() > 0.5 ? q.num1 : q.num2;
-                const offset = (Math.floor(Math.random() * 3) + 1) * (multiplier || 2);
-                let fake = Math.random() > 0.5 ? (correctAnswer + offset) : (correctAnswer - offset);
-                if (fake <= 0 || fake === correctAnswer) {
-                    fake = correctAnswer + (Math.floor(Math.random() * 10) + 1);
-                }
-                options.add(fake);
-            }
-
-            let fallbackOffset = 1;
-            while (options.size < 4) {
-                if (!options.has(correctAnswer + fallbackOffset)) {
-                    options.add(correctAnswer + fallbackOffset);
-                }
-                fallbackOffset++;
-            }
-
-            return {
-                text: `${toArNum(q.num1)} × ${toArNum(q.num2)}`,
-                answer: correctAnswer,
-                options: shuffleArray(Array.from(options)),
-                qData: q
-            };
-        });
-    }
-
-    function startSpeedMode() {
-        if (!state.currentUser) {
-            navTo('student-login');
-            return;
-        }
-
-        const student = mockDB.students[state.currentUser.name];
-        if (!student || (student.attempts !== undefined && student.attempts <= 0)) {
-            return;
-        }
-
-        student.attempts = Math.max(0, (student.attempts ?? 3) - 1);
-        saveDB();
-
-        initAudio();
-        state.mode = 'speed';
-        state.questions = generateQuestions('speed', [], 50);
-        state.totalTime = 90; // 90 ثانية
-        initGameSession();
-    }
-
-    function startPracticeMode() {
-        if (state.selectedTables.size === 0) return;
-        initAudio();
-        state.mode = 'practice';
-        const tables = Array.from(state.selectedTables);
-        state.questions = generateQuestions('practice', tables, state.practiceQuestionCount || 20);
-        state.totalTime = 0;
-        initGameSession();
-    }
-
-    function startMistakesRetry() {
-        if (!state.stats.rawMistakes || state.stats.rawMistakes.length === 0) return;
-        initAudio();
-        state.mode = 'practice';
-        const customPool = state.stats.rawMistakes.map(m => ({ num1: m.num1, num2: m.num2 }));
-        state.questions = buildQuestionsFromPool(customPool, customPool.length);
-        state.totalTime = 0;
-        initGameSession();
-    }
-
-    function replaySameMode() {
-        if (state.mode === 'speed') {
-            const student = state.currentUser ? mockDB.students[state.currentUser.name] : null;
-            if (!student || (student.attempts ?? 0) <= 0) {
-                showToast('لقد استنفدت جميع محاولاتك في تحدي السرعة!', 'error');
-                navTo('home');
-                return;
-            }
-            startSpeedMode();
-        } else {
-            startPracticeMode();
-        }
-    }
-
-    function buildQuestionsFromPool(pool, count) {
-        let finalPool = shuffleArray(pool);
-        while (finalPool.length < count) {
-            finalPool = finalPool.concat(shuffleArray(pool));
-        }
-        return finalPool.slice(0, count).map(q => {
-            const correctAnswer = q.num1 * q.num2;
-            const options = new Set([correctAnswer]);
-            let safety = 0;
-
-            while (options.size < 4 && safety++ < 60) {
-                const multiplier = Math.random() > 0.5 ? q.num1 : q.num2;
-                const offset = (Math.floor(Math.random() * 3) + 1) * (multiplier || 2);
-                let fake = Math.random() > 0.5 ? (correctAnswer + offset) : (correctAnswer - offset);
-                if (fake <= 0 || fake === correctAnswer) {
-                    fake = correctAnswer + (Math.floor(Math.random() * 10) + 1);
-                }
-                options.add(fake);
-            }
-
-            let fallbackOffset = 1;
-            while (options.size < 4) {
-                if (!options.has(correctAnswer + fallbackOffset)) {
-                    options.add(correctAnswer + fallbackOffset);
-                }
-                fallbackOffset++;
-            }
-
-            return {
-                text: `${toArNum(q.num1)} × ${toArNum(q.num2)}`,
-                answer: correctAnswer,
-                options: shuffleArray(Array.from(options)),
-                qData: q
-            };
-        });
-    }
-
-    function initGameSession() {
-        if (state.nextTimeout) {
-            clearTimeout(state.nextTimeout);
-            state.nextTimeout = null;
-        }
-        clearInterval(state.timerInterval);
-
-        state.currentIndex = 0;
-        state.score = 0;
-        state.combo = 0;
-        state.timeLeft = state.totalTime;
-        state.stats = { correct: 0, wrong: 0, mistakesList: [], rawMistakes: [] };
-        state.sessionStartTime = Date.now();
-        state.sessionLogged = false;
-
-        updateScoreDisplay();
-        const comboEl = document.getElementById('combo-display');
-        if (comboEl) comboEl.style.opacity = '0';
-
-        const timeContainer = document.getElementById('time-bar-container');
-        const timeDisplay = document.getElementById('time-display');
-        const submitSpeedBtn = document.getElementById('btn-submit-speed');
-
-        if (state.mode === 'speed') {
-            if (timeContainer) timeContainer.classList.remove('hidden');
-            if (submitSpeedBtn) submitSpeedBtn.classList.remove('hidden');
-            const timeBar = document.getElementById('time-bar');
-            if (timeBar) {
-                timeBar.style.width = '100%';
-                timeBar.className = 'bg-rose-500 h-full rounded-full transition-all duration-1000 ease-linear';
-            }
-            if (timeDisplay) {
-                timeDisplay.innerText = `${toArNum(state.totalTime)} ثانية`;
-                timeDisplay.classList.remove('animate-pulse');
-            }
-            startTimer();
-        } else {
-            if (timeContainer) timeContainer.classList.add('hidden');
-            if (submitSpeedBtn) submitSpeedBtn.classList.add('hidden');
-        }
-
-        navTo('game');
-        loadQuestion();
-    }
-
-    function loadQuestion() {
-        if (state.currentIndex >= state.questions.length) {
-            endGame(true);
-            return;
-        }
-
-        state.isAnswered = false;
-        const q = state.questions[state.currentIndex];
-
-        const qTextEl = document.getElementById('question-text');
-        const progressEl = document.getElementById('progress-display');
-        const hintEl = document.getElementById('hint-box');
-
-        if (qTextEl) qTextEl.innerText = q.text;
-        if (progressEl) progressEl.innerText = `${toArNum(state.currentIndex + 1)}/${toArNum(state.questions.length)}`;
-        if (hintEl) hintEl.classList.add('hidden');
-
-        for (let i = 0; i < 4; i++) {
-            const btn = document.getElementById(`ans-${i}`);
-            if (btn) {
-                btn.innerText = toArNum(q.options[i]);
-                btn.className = 'btn-answer';
-                btn.disabled = false;
-            }
-        }
-    }
-
-    function checkAnswer(selectedIndex) {
-        if (state.isAnswered) return;
-        state.isAnswered = true;
-
-        const q = state.questions[state.currentIndex];
-        const selectedValue = q.options[selectedIndex];
-        const btn = document.getElementById(`ans-${selectedIndex}`);
-
-        for (let i = 0; i < 4; i++) {
-            const b = document.getElementById(`ans-${i}`);
-            if (b) b.disabled = true;
-        }
-
-        if (selectedValue === q.answer) {
-            playSound('correct');
-            if (btn) btn.classList.add('correct');
-            state.stats.correct++;
-            state.combo++;
-
-            const pointsEarned = 10 + (state.combo > 2 ? 5 : 0);
-            state.score += pointsEarned;
-
-            if (state.combo > 2) {
-                const comboEl = document.getElementById('combo-display');
-                if (comboEl) {
-                    comboEl.innerText = `متتالية سريعة! x${toArNum(state.combo)} 🔥`;
-                    comboEl.style.opacity = '1';
-                    comboEl.classList.remove('animate-bounce-short');
-                    void comboEl.offsetWidth;
-                    comboEl.classList.add('animate-bounce-short');
-                }
-            }
-
-            state.nextTimeout = setTimeout(nextQuestion, 500);
-        } else {
-            playSound('wrong');
-            if (btn) btn.classList.add('wrong');
-            state.stats.wrong++;
-            state.combo = 0;
-
-            const comboEl = document.getElementById('combo-display');
-            if (comboEl) comboEl.style.opacity = '0';
-
-            state.stats.mistakesList.push(`${toArNum(q.qData.num1)} × ${toArNum(q.qData.num2)} = ${toArNum(q.answer)}`);
-            state.stats.rawMistakes.push({ num1: q.qData.num1, num2: q.qData.num2 });
-
-            const correctIndex = q.options.indexOf(q.answer);
-            const correctBtn = document.getElementById(`ans-${correctIndex}`);
-            if (correctBtn) correctBtn.classList.add('correct');
-
-            const hintBox = document.getElementById('hint-box');
-            if (hintBox) {
-                let extraTip = '';
-                const n1 = q.qData.num1;
-                const n2 = q.qData.num2;
-                if (n1 === 9 || n2 === 9) {
-                    const other = n1 === 9 ? n2 : n1;
-                    extraTip = ` 💡 (طريقة الـ ٩: اطرح ١ من ${toArNum(other)} وأكمل للـ ٩)`;
-                } else if (n1 === 5 || n2 === 5) {
-                    extraTip = ` 💡 (جدول ٥ ينتهي دائماً بـ ٠ أو ٥)`;
-                } else if (n1 === n2) {
-                    extraTip = ` 💡 (حقيقة مربعة للعدد ${toArNum(n1)})`;
-                }
-                hintBox.innerText = `تذكر: ${q.text} = ${toArNum(q.answer)}${extraTip}`;
-                hintBox.classList.remove('hidden');
-            }
-
-            state.nextTimeout = setTimeout(nextQuestion, 1600);
-        }
-
-        updateScoreDisplay();
-    }
-
-    function nextQuestion() {
-        if (state.nextTimeout) {
-            clearTimeout(state.nextTimeout);
-            state.nextTimeout = null;
-        }
-        if (!document.getElementById('screen-game').classList.contains('active')) return;
-        state.currentIndex++;
-        loadQuestion();
-    }
-
-    function updateScoreDisplay() {
-        const scoreEl = document.getElementById('score-display');
-        if (scoreEl) scoreEl.innerText = toArNum(state.score);
-    }
-
-    function startTimer() {
-        clearInterval(state.timerInterval);
-        const timeBar = document.getElementById('time-bar');
-        const timeDisplay = document.getElementById('time-display');
-
-        state.timerInterval = setInterval(() => {
-            state.timeLeft--;
-
-            const percentage = Math.max(0, (state.timeLeft / state.totalTime) * 100);
-            if (timeBar) timeBar.style.width = `${percentage}%`;
-            if (timeDisplay) timeDisplay.innerText = `${toArNum(state.timeLeft)} ثانية`;
-
-            if (percentage < 25 && timeBar) {
-                timeBar.classList.remove('bg-rose-500');
-                timeBar.classList.add('bg-amber-500');
-                if (timeDisplay) timeDisplay.classList.add('animate-pulse');
-            }
-
-            if (state.timeLeft <= 0) {
-                clearInterval(state.timerInterval);
-                endGame(false);
-            }
-        }, 1000);
-    }
-
-    function submitSpeedChallenge() {
-        endGame(false, true);
-    }
-
-    function quitGame() {
-        if (state.nextTimeout) {
-            clearTimeout(state.nextTimeout);
-            state.nextTimeout = null;
-        }
-        clearInterval(state.timerInterval);
-
-        const answered = state.stats.correct + state.stats.wrong;
-        // استرجاع المحاولة إذا خرج الطالب قبل الإجابة على أي سؤال في تحدي السرعة
-        if (state.mode === 'speed' && answered === 0 && state.currentUser) {
-            const student = mockDB.students[state.currentUser.name];
-            if (student) {
-                student.attempts = Math.min(3, (student.attempts || 0) + 1);
-                saveDB();
-                showToast('لم يتم احتساب المحاولة لعدم البدء في الحل', 'info');
-            }
-        } else {
-            recordTrainingSession('quit');
-        }
-        navTo('home');
-    }
-
-    function endGame(completed, isEarlySubmit = false) {
-        if (state.nextTimeout) {
-            clearTimeout(state.nextTimeout);
-            state.nextTimeout = null;
-        }
-        clearInterval(state.timerInterval);
-        playSound('end');
-
-        recordTrainingSession(isEarlySubmit ? 'submitted' : (completed ? 'completed' : 'time_up'));
-
-        const timeTaken = state.mode === 'speed' ? Math.max(1, state.totalTime - state.timeLeft) : 0;
-        const totalQuestions = state.stats.correct + state.stats.wrong;
-        const accuracy = totalQuestions > 0 ? Math.round((state.stats.correct / totalQuestions) * 100) : 0;
-
-        // تحديث لوحة الشرف وبيانات الطالب
-        if (state.mode === 'speed' && state.currentUser) {
-            const student = mockDB.students[state.currentUser.name];
-            if (student) {
-                if (state.score > (student.bestScore || 0)) {
-                    student.bestScore = state.score;
-                    student.bestAccuracy = accuracy;
-                }
-                // منح شهادة التميز عند الحصول على 200 نقطة أو أكثر في تحدي السرعة
-                if (state.score >= 200) {
-                    student.certified = true;
-                    if (!student.bestAccuracy || accuracy > student.bestAccuracy) {
-                        student.bestAccuracy = accuracy;
-                    }
-                }
-            }
-
-            if (state.score > 0) {
-                const existingIndex = mockDB.leaderboard.findIndex(e => e.name === state.currentUser.name);
-                if (existingIndex !== -1) {
-                    const existing = mockDB.leaderboard[existingIndex];
-                    if (state.score > existing.score || (state.score === existing.score && timeTaken < existing.timeTaken)) {
-                        existing.score = state.score;
-                        existing.timeTaken = timeTaken;
-                        existing.class = state.currentUser.class;
-                    }
-                } else {
-                    mockDB.leaderboard.push({
-                        name: state.currentUser.name,
-                        class: state.currentUser.class,
-                        score: state.score,
-                        timeTaken: timeTaken
-                    });
-                }
-            }
-            saveDB();
-        }
-
-        // تعبئة شاشة النتائج
-        document.getElementById('final-score').innerText = toArNum(state.score);
-        document.getElementById('final-correct').innerText = toArNum(state.stats.correct);
-        document.getElementById('final-wrong').innerText = toArNum(state.stats.wrong);
-        document.getElementById('final-accuracy').innerText = `${toArNum(accuracy)}٪`;
-
-        const title = document.getElementById('result-title');
-        const subtitle = document.getElementById('result-subtitle');
-        const icon = document.getElementById('result-icon');
-        const certBtn = document.getElementById('btn-result-certificate');
-
-        const isSpeed = (state.mode === 'speed');
-        const earnedCert = isSpeed && (state.score >= 200);
-        const studentHasCert = state.currentUser && mockDB.students[state.currentUser.name]?.certified;
-
-        if (earnedCert) {
-            title.innerText = 'أنت بطل متميز واستحققت الشهادة! 🏆';
-            title.className = 'text-2xl font-black text-amber-500 mb-1';
-            icon.innerHTML = '<i class="fa-solid fa-award text-amber-500 text-6xl animate-bounce-short"></i>';
-        } else if (state.score >= 200 || accuracy >= 90) {
-            title.innerText = 'أنت بطل أسطوري! 🏆';
-            title.className = 'text-2xl font-black text-amber-500 mb-1';
-            icon.innerHTML = '<i class="fa-solid fa-crown text-amber-500"></i>';
-        } else if (accuracy >= 70) {
-            title.innerText = 'عمل رائع ومتميز! 🌟';
-            title.className = 'text-2xl font-black text-emerald-600 mb-1';
-            icon.innerHTML = '<i class="fa-solid fa-star text-emerald-500"></i>';
-        } else {
-            title.innerText = 'استمر بالتدريب يا بطل! 💪';
-            title.className = 'text-2xl font-black text-teal-600 mb-1';
-            icon.innerHTML = '<i class="fa-solid fa-dumbbell text-teal-500"></i>';
-        }
-
-        // إظهار زر الشهادة إذا حقق 200 نقطة أو أكثر في تحدي السرعة أو نالها مسبقاً
-        if (earnedCert || studentHasCert) {
-            if (certBtn) certBtn.classList.remove('hidden');
-        } else {
-            if (certBtn) certBtn.classList.add('hidden');
-        }
-
-        const timeContainer = document.getElementById('time-taken-container');
-        if (state.mode === 'speed') {
-            timeContainer.classList.remove('hidden');
-            document.getElementById('final-time').innerText = `${toArNum(timeTaken)} ثانية`;
-        } else {
-            timeContainer.classList.add('hidden');
-        }
-
-        if (earnedCert) {
-            subtitle.innerText = 'مبارك! حصلت على ٢٠٠ نقطة أو أكثر واستحققت شهادة التميز 🎓';
-        } else if (isEarlySubmit) {
-            subtitle.innerText = 'تم تسليم النتيجة للمعلم بنجاح!';
-        } else if (!completed) {
-            subtitle.innerText = 'انتهى الوقت المحدد وتم حفظ إنجازك.';
-        } else {
-            subtitle.innerText = 'أكملت جميع الأسئلة بجدارة!';
-        }
-
-        const mistakesContainer = document.getElementById('mistakes-container');
-        const mistakesList = document.getElementById('mistakes-list');
-        const retryMistakesBtn = document.getElementById('btn-retry-mistakes');
-        if (state.stats.mistakesList.length > 0) {
-            mistakesContainer.classList.remove('hidden');
-            if (retryMistakesBtn) retryMistakesBtn.classList.remove('hidden');
-            const uniqueMistakes = [...new Set(state.stats.mistakesList)].slice(0, 6);
-            mistakesList.innerHTML = uniqueMistakes.map(m => `<li>${m}</li>`).join('');
-        } else {
-            mistakesContainer.classList.add('hidden');
-            if (retryMistakesBtn) retryMistakesBtn.classList.add('hidden');
-        }
-
-        navTo('result');
-    }
-
-    function recordTrainingSession(triggerReason) {
-        if (state.sessionLogged) return;
-        const answered = state.stats.correct + state.stats.wrong;
-        if (answered === 0) return;
-
-        state.sessionLogged = true;
-        const timeSpent = Math.max(1, Math.round((Date.now() - (state.sessionStartTime || Date.now())) / 1000));
-
-        let tablesText = '';
-        if (state.mode === 'speed') {
-            tablesText = 'تحدي السرعة (شامل)';
-        } else {
-            const selectedArr = Array.from(state.selectedTables).sort((a, b) => a - b);
-            tablesText = selectedArr.length > 0 
-                ? 'جدول ' + selectedArr.map(toArNum).join('، ')
-                : 'تدريب عام';
-        }
-
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
-
-        const logEntry = {
-            id: Date.now(),
-            name: state.currentUser ? state.currentUser.name : 'طالب زائر',
-            class: state.currentUser ? state.currentUser.class : 'غير محدد',
-            tablesText: tablesText,
-            totalAnswered: answered,
-            correct: state.stats.correct,
-            wrong: state.stats.wrong,
-            timeSpent: timeSpent,
-            timestamp: timeString,
-            type: state.mode === 'speed' ? 'تحدي سرعة' : 'تدريب'
-        };
-
-        mockDB.practiceLogs.unshift(logEntry);
-
-        if (state.currentUser && mockDB.students[state.currentUser.name]) {
-            const st = mockDB.students[state.currentUser.name];
-            st.totalSolved = (st.totalSolved || 0) + answered;
-            st.totalCorrect = (st.totalCorrect || 0) + state.stats.correct;
-            st.totalWrong = (st.totalWrong || 0) + state.stats.wrong;
-            st.lastActive = `اليوم ${timeString}`;
-        }
-        saveDB();
-    }
-
-    function renderLeaderboard() {
-        const container = document.getElementById('leaderboard-list');
-        if (!container) return;
-        container.innerHTML = '';
-
-        const sorted = [...mockDB.leaderboard].sort((a, b) => {
-            if (b.score !== a.score) return b.score - a.score;
-            return (a.timeTaken || 0) - (b.timeTaken || 0);
-        }).slice(0, 10);
-
-        if (sorted.length === 0) {
-            container.innerHTML = '<p class="text-center text-slate-400 py-6 font-bold text-xs">لا توجد نتائج مسجلة حتى الآن</p>';
-            return;
-        }
-
-        sorted.forEach((p, index) => {
-            const div = document.createElement('div');
-            div.className = 'leaderboard-row flex justify-between items-center p-3 rounded-2xl border border-slate-200 bg-white shadow-sm';
-
-            let rankBadge = `<span class="w-6 h-6 flex items-center justify-center bg-slate-200 text-slate-700 rounded-full text-xs font-black">${toArNum(index + 1)}</span>`;
-            if (index === 0) rankBadge = `<i class="fa-solid fa-medal text-amber-500 text-xl"></i>`;
-            else if (index === 1) rankBadge = `<i class="fa-solid fa-medal text-slate-400 text-xl"></i>`;
-            else if (index === 2) rankBadge = `<i class="fa-solid fa-medal text-orange-400 text-xl"></i>`;
-
-            div.innerHTML = `
-                <div class="flex items-center gap-2.5">
-                    ${rankBadge}
-                    <div>
-                        <div class="font-black text-slate-800 text-xs">${escapeHTML(p.name)}</div>
-                        <div class="text-[10px] text-slate-500 font-bold">${escapeHTML(p.class)} <span class="mx-1 text-slate-300">|</span> <i class="fa-regular fa-clock"></i> ${toArNum(p.timeTaken || 0)} ث</div>
-                    </div>
-                </div>
-                <div class="font-black text-teal-700 text-sm bg-white px-2.5 py-1 rounded-xl shadow-sm border border-slate-100">
-                    ${toArNum(p.score)} نقطة
-                </div>
-            `;
-            container.appendChild(div);
-        });
-    }
-
-    function showCertificate() {
-        const student = state.currentUser ? mockDB.students[state.currentUser.name] : null;
-        const name = state.currentUser ? state.currentUser.name : 'بطل الرياضيات';
-        const stClass = state.currentUser ? state.currentUser.class : 'مدرسة السعودية';
-        const score = (state.mode === 'speed' && state.score >= 200)
-            ? state.score
-            : ((student && student.bestScore >= 200) ? student.bestScore : (state.score || 200));
-        
-        let acc = 100;
-        const currentTotal = state.stats.correct + state.stats.wrong;
-        if (state.mode === 'speed' && state.score >= 200 && currentTotal > 0) {
-            acc = Math.round((state.stats.correct / currentTotal) * 100);
-        } else if (student && student.bestAccuracy) {
-            acc = student.bestAccuracy;
-        } else if (student && student.totalSolved > 0) {
-            acc = Math.round((student.totalCorrect / student.totalSolved) * 100);
-        }
-
-        document.getElementById('cert-student-name').innerText = name;
-        document.getElementById('cert-student-class').innerText = stClass;
-        document.getElementById('cert-score').innerText = toArNum(score);
-        document.getElementById('cert-accuracy').innerText = `${toArNum(acc)}٪`;
-
-        const today = new Date().toLocaleDateString('ar-SA');
-        document.getElementById('cert-date').innerText = today;
-
-        navTo('certificate');
-    }
-
-    // دعم الاختصارات للوحة المفاتيح والسبورة الذكية (الأزرار ١ - ٤)
-    window.addEventListener('keydown', (e) => {
-        if (!document.getElementById('screen-game')?.classList.contains('active')) return;
-        if (state.isAnswered) return;
-        if (e.key === '1') checkAnswer(0);
-        else if (e.key === '2') checkAnswer(1);
-        else if (e.key === '3') checkAnswer(2);
-        else if (e.key === '4') checkAnswer(3);
-    });
-
-    window.onload = () => {
-        renderTableSelection();
-    };
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js';
+import {getAuth,signInAnonymously,signInWithEmailAndPassword,signOut} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js';
+import {getFirestore,doc,getDoc,setDoc,addDoc,updateDoc,deleteDoc,collection,getDocs,query,orderBy,limit,where,writeBatch,serverTimestamp} from 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js';
+
+const app=initializeApp({apiKey:"AIzaSyAc_RYSd9n9esd73JX0ZB4fKZCWcaQWV8c",authDomain:"abtal-aldarb.firebaseapp.com",projectId:"abtal-aldarb",storageBucket:"abtal-aldarb.firebasestorage.app",messagingSenderId:"798509176645",appId:"1:798509176645:web:fd977369dabb119d38d02c"});
+const auth=getAuth(app),fs=getFirestore(app);
+
+const $=id=>document.getElementById(id);
+const AR='٠١٢٣٤٥٦٧٨٩',ar=n=>String(n??0).replace(/\d/g,d=>AR[d]);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const clamp=(v,a,b,d)=>Number.isFinite(v)?Math.min(b,Math.max(a,Math.round(v))):d;
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const CLASSES=['رابع أ','رابع ب','رابع ج','خامس أ','خامس ب','خامس ج','سادس أ','سادس ب','سادس ج','أول متوسط أ','أول متوسط ب'];
+const NAME_RE=/^[\u0600-\u06FFa-zA-Z ]{2,40}$/;
+const MAXS=800,CERT=200;
+
+let user=null,S=null,isT=false,authT=null,fails=0,lock=0,tab=1;
+const T={students:[],logs:[]};
+const G={mode:'',qs:[],i:0,score:0,combo:0,ok:0,bad:0,mist:[],left:0,total:0,tm:null,nx:null,done:false,t0:0,logged:false,charged:false,tables:new Set(),pc:20};
+
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove('on'),2800)}
+function ask(title,msg,fn){$('mt').textContent=title;$('mm').textContent=msg;$('modal').classList.add('on');$('my').onclick=()=>{$('modal').classList.remove('on');fn()}}
+$('mn').onclick=()=>$('modal').classList.remove('on');
+
+async function anon(){if(!auth.currentUser)await signInAnonymously(auth)}
+auth.authStateReady().then(async()=>{try{if(auth.currentUser&&!auth.currentUser.isAnonymous)await signOut(auth);await anon()}catch(e){toast('تعذر الاتصال بالخادم')}});
+
+function show(id){
+  if(id==='tdash'&&!isT)id='welcome';
+  if((id==='home'||id==='psetup'||id==='certs')&&!user)id='welcome';
+  document.querySelectorAll('.s').forEach(s=>s.classList.toggle('on',s.id===id));
+  window.scrollTo(0,0);
+  if(id==='home')home();if(id==='board')board();if(id==='tdash')dash();if(id==='psetup')tgrid();
+}
+async function fetchBoard(){const s=await getDocs(query(collection(fs,'board'),orderBy('score','desc'),limit(10)));return s.docs.map(d=>d.data()).sort((a,b)=>b.score-a.score||a.t-b.t)}
+function saveStudent(upd){Object.assign(S,upd);return updateDoc(doc(fs,'students',user.key),{...upd,at:serverTimestamp()}).catch(()=>toast('تعذر حفظ التقدم، تحقق من الاتصال'))}
+
+CLASSES.forEach(c=>{$('sclass').add(new Option(c,c));$('tfilter').add(new Option(c,c))});
+$('tfilter').insertBefore(new Option('كل الفصول','all'),$('tfilter').firstChild);$('tfilter').value='all';
+
+$('sform').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const name=$('sname').value.trim().replace(/\s+/g,' '),cls=$('sclass').value;
+  if(!NAME_RE.test(name)||!CLASSES.includes(cls)){toast('اكتب الاسم بحروف عربية أو إنجليزية فقط (٢ إلى ٤٠ حرفاً)');return}
+  const btn=e.submitter;btn.disabled=true;
+  try{
+    await anon();
+    const key=(name+'_'+cls).replace(/ /g,'-'),ref=doc(fs,'students',key);
+    let snap=await getDoc(ref);
+    if(!snap.exists()){await setDoc(ref,{name,cls,att:3,best:0,acc:0,solved:0,ok:0,cert:false,at:serverTimestamp()});snap=await getDoc(ref)}
+    S=snap.data();user={name,cls,key};$('sname').value='';show('home');
+  }catch(x){toast('تعذر تسجيل الدخول، تحقق من الاتصال وحاول مجدداً')}
+  btn.disabled=false;
+});
+
+$('tform').addEventListener('submit',async e=>{
+  e.preventDefault();const er=$('terr'),btn=e.submitter;
+  const fail=m=>{er.textContent=m;er.style.display='block'};
+  if(Date.now()<lock)return fail('محاولات كثيرة، انتظر دقيقة ثم أعد المحاولة');
+  const u=$('tuser').value.trim(),p=$('tpass').value;$('tpass').value='';btn.disabled=true;
+  try{
+    await signInWithEmailAndPassword(auth,u,p);
+    try{await loadDash()}catch(x){await signOut(auth);await anon();throw {code:'denied'}}
+    fails=0;isT=true;er.style.display='none';$('tuser').value='';armAuth();show('tdash');
+  }catch(x){
+    if(x.code==='denied')fail('هذا الحساب لا يملك صلاحية المعلم');
+    else{if(++fails>=5){lock=Date.now()+60000;fails=0}fail('البريد أو كلمة المرور غير صحيحة')}
+  }
+  btn.disabled=false;
+});
+function armAuth(){clearTimeout(authT);authT=setTimeout(()=>{if(isT){ACT.tout();toast('انتهت الجلسة لعدم النشاط')}},15*60000)}
+
+async function home(){
+  $('hello').textContent='أهلاً بك يا بطل '+user.name+'!';$('hcls').textContent='فصل: '+user.cls;
+  const a=S.att;$('att').textContent=a>0?'المتبقي: '+ar(a)+' محاولات':'استنفدت المحاولات';$('speedb').disabled=a<=0;
+  $('hcert').style.display=S.cert?'block':'none';
+  try{const b=(await fetchBoard())[0];$('topn').textContent=b?b.name:'كن أول بطل!';$('tops').textContent=ar(b?b.score:0)}catch(e){}
+}
+async function board(){
+  const c=$('bl');c.innerHTML='<p class="mut ctr">جارٍ التحميل...</p>';
+  try{const l=await fetchBoard();
+    c.innerHTML=l.length?l.map((p,i)=>`<div class="lb"><span>${['🥇','🥈','🥉'][i]||ar(i+1)} ${esc(p.name)} <span class="mut">${esc(p.cls)} • ${ar(p.t)}ث</span></span><span style="color:var(--teal)">${ar(p.score)} نقطة</span></div>`).join(''):'<p class="mut ctr">لا توجد نتائج بعد</p>';
+  }catch(e){c.innerHTML='<p class="mut ctr">تعذر تحميل اللوحة</p>'}
+}
+
+function tgrid(){
+  $('tgrid').innerHTML='';
+  for(let i=1;i<=10;i++){const b=document.createElement('button');b.className='tb'+(G.tables.has(i)?' on':'');b.textContent=ar(i);b.onclick=()=>{G.tables.has(i)?G.tables.delete(i):G.tables.add(i);tgrid()};$('tgrid').appendChild(b)}
+  $('pstart').disabled=G.tables.size===0;
+  $('qc').innerHTML='';[10,20,30].forEach(n=>{const b=document.createElement('button');b.className='tb'+(G.pc===n?' on':'');b.textContent=ar(n)+' سؤالاً';b.style.fontSize='.8rem';b.onclick=()=>{G.pc=n;tgrid()};$('qc').appendChild(b)});
+}
+function mkQ(p){
+  const ans=p.a*p.b,o=new Set([ans]);let n=0;
+  while(o.size<4&&n++<60){const m=Math.random()>.5?p.a:p.b,off=(1+Math.floor(Math.random()*3))*m;let f=Math.random()>.5?ans+off:ans-off;if(f<=0||f===ans)f=ans+1+Math.floor(Math.random()*10);o.add(f)}
+  for(let k=1;o.size<4;k++)o.add(ans+k);
+  return{t:ar(p.a)+' × '+ar(p.b),ans,opts:shuf([...o]),p};
+}
+function build(pool,n){let f=shuf(pool);while(f.length<n)f=f.concat(shuf(pool));return f.slice(0,n).map(mkQ)}
+function speedPool(){const p=[];for(let i=2;i<=10;i++)for(let j=2;j<=10;j++)p.push({a:i,b:j});return p}
+function tablePool(){const p=[];G.tables.forEach(t=>{for(let i=1;i<=10;i++)p.push({a:t,b:i})});return p}
+
+function begin(){
+  clearTimeout(G.nx);clearInterval(G.tm);
+  Object.assign(G,{i:0,score:0,combo:0,ok:0,bad:0,mist:[],left:G.total,logged:false,charged:false,t0:Date.now(),done:false});
+  $('sc').textContent='⭐ ٠';$('combo').textContent='';
+  const sp=G.mode==='speed';
+  $('tbox').style.display=sp?'block':'none';$('gsub').style.display=sp?'inline-block':'none';
+  if(sp){$('tbar').style.width='100%';$('tl').textContent=ar(G.total);G.tm=setInterval(()=>{G.left--;$('tbar').style.width=Math.max(0,G.left/G.total*100)+'%';$('tl').textContent=ar(Math.max(0,G.left));if(G.left<=0)end(false)},1000)}
+  show('game');load();
+}
+function load(){
+  if(G.i>=G.qs.length)return end(true);
+  G.done=false;const q=G.qs[G.i];
+  $('qt').textContent=q.t;$('prog').textContent=ar(G.i+1)+'/'+ar(G.qs.length);$('hint').style.display='none';
+  q.opts.forEach((o,k)=>{const b=$('a'+k);b.textContent=ar(o);b.className='ans';b.disabled=false});
+}
+function answer(k){
+  if(G.done)return;G.done=true;
+  if(G.mode==='speed'&&!G.charged){G.charged=true;saveStudent({att:Math.max(0,S.att-1)})}
+  const q=G.qs[G.i],b=$('a'+k);for(let j=0;j<4;j++)$('a'+j).disabled=true;
+  if(q.opts[k]===q.ans){
+    b.classList.add('ok');G.ok++;G.combo++;G.score+=10+(G.combo>2?5:0);
+    if(G.combo>2)$('combo').textContent='متتالية سريعة! ×'+ar(G.combo)+' 🔥';
+    G.nx=setTimeout(next,500);
+  }else{
+    b.classList.add('no');G.bad++;G.combo=0;$('combo').textContent='';
+    G.mist.push(q.p);$('a'+q.opts.indexOf(q.ans)).classList.add('ok');
+    const h=$('hint');h.textContent='تذكر: '+q.t+' = '+ar(q.ans);h.style.display='block';
+    G.nx=setTimeout(next,1600);
+  }
+  $('sc').textContent='⭐ '+ar(G.score);
+}
+function next(){clearTimeout(G.nx);if(!$('game').classList.contains('on'))return;G.i++;load()}
+
+function logSession(extra={}){
+  if(G.logged)return;const n=G.ok+G.bad;if(!n)return;G.logged=true;
+  const t=clamp((Date.now()-G.t0)/1000,1,9999,1),sp=G.mode==='speed';
+  addDoc(collection(fs,'logs'),{name:user.name,cls:user.cls,type:sp?'سرعة':'تدريب',tables:(sp?'تحدي السرعة':'جدول '+[...G.tables].sort((a,b)=>a-b).map(ar).join('، ')).slice(0,40),n,ok:G.ok,bad:G.bad,t,at:serverTimestamp()}).catch(()=>toast('تعذر حفظ السجل'));
+  saveStudent({solved:S.solved+n,ok:S.ok+G.ok,...extra});
+}
+function end(completed,early){
+  clearTimeout(G.nx);clearInterval(G.tm);
+  const sp=G.mode==='speed',n=G.ok+G.bad,acc=n?Math.round(G.ok/n*100):0,tt=sp?clamp(G.total-Math.max(0,G.left),1,90,90):0;
+  const score=Math.min(G.score,MAXS),isBest=sp&&score>S.best,extra={};
+  if(sp){if(isBest){extra.best=score;extra.acc=acc}if(score>=CERT)extra.cert=true}
+  logSession(extra);
+  if(isBest)setDoc(doc(fs,'board',user.key),{name:user.name,cls:user.cls,score,t:tt}).catch(()=>toast('تعذر تحديث لوحة الشرف'));
+  const earned=sp&&score>=CERT;
+  $('fs').textContent=ar(score);$('fc').textContent=ar(G.ok);$('fw').textContent=ar(G.bad);$('fa').textContent=ar(acc)+'٪';
+  $('rt').textContent=earned?'أنت بطل متميز واستحققت الشهادة! 🏆':acc>=90?'أنت بطل أسطوري! 🏆':acc>=70?'عمل رائع! 🌟':'استمر بالتدريب يا بطل! 💪';
+  $('ri').textContent=earned?'🏅':acc>=70?'⭐':'💪';
+  $('rs').textContent=earned?'حصلت على ٢٠٠ نقطة أو أكثر 🎓':early?'تم تسليم النتيجة':!completed?'انتهى الوقت وحُفظ إنجازك':'أكملت جميع الأسئلة!';
+  $('ft').style.display=sp?'block':'none';$('ftv').textContent=ar(tt)+' ثانية';
+  $('rcert').style.display=(earned||S.cert)?'block':'none';
+  const u=[...new Set(G.mist.map(p=>ar(p.a)+' × '+ar(p.b)+' = '+ar(p.a*p.b)))].slice(0,6);
+  $('mist').style.display=u.length?'block':'none';$('rretry').style.display=u.length?'block':'none';
+  $('ml').innerHTML=u.map(m=>`<li>${esc(m)}</li>`).join('');
+  show('result');
+}
+function certShow(){
+  if(!S||!S.cert)return;
+  $('cn').textContent=user.name;$('cc').textContent=user.cls;$('cs').textContent=ar(S.best);$('ca').textContent=ar(S.acc)+'٪';
+  $('cd').textContent=new Date().toLocaleDateString('ar-SA');show('certs');
+}
+
+async function loadDash(){
+  const [a,b]=await Promise.all([getDocs(collection(fs,'students')),getDocs(query(collection(fs,'logs'),orderBy('at','desc'),limit(300)))]);
+  T.students=a.docs.map(d=>({id:d.id,...d.data()}));T.logs=b.docs.map(d=>({id:d.id,...d.data()}));
+}
+function dash(){
+  armAuth();
+  const q=$('tsearch').value.trim().toLowerCase(),f=$('tfilter').value;
+  const tot=T.students.reduce((a,s)=>a+s.solved,0),ok=T.students.reduce((a,s)=>a+s.ok,0);
+  $('k1').textContent=ar(T.students.length);$('k2').textContent=ar(tot);$('k3').textContent=ar(tot?Math.round(ok/tot*100):0)+'٪';
+  $('tab1').className='b sm '+(tab===1?'p':'gr');$('tab2').className='b sm '+(tab===2?'p':'gr');
+  const box=$('scroll');
+  if(tab===1){
+    const l=T.logs.filter(x=>x.name.toLowerCase().includes(q)&&(f==='all'||x.cls===f));
+    box.innerHTML=l.length?l.map(x=>{const at=x.at&&x.at.toDate?x.at.toDate().toLocaleString('ar-SA',{dateStyle:'short',timeStyle:'short'}):'';return `<div class="lg"><div class="row sp"><span>👤 ${esc(x.name)} • ${esc(x.cls)} • ${esc(x.type)}</span><button class="x np" data-del-log="${esc(x.id)}">✕</button></div><div class="mut">${esc(x.tables)} • ${esc(at)} • ${ar(x.t)} ث</div><div>الأسئلة ${ar(x.n)} • ✅ ${ar(x.ok)} • ❌ ${ar(x.bad)}</div></div>`}).join(''):'<p class="mut ctr">لا توجد سجلات</p>';
+  }else{
+    const l=T.students.filter(s=>s.name.toLowerCase().includes(q)&&(f==='all'||s.cls===f));
+    box.innerHTML=l.length?l.map(s=>`<div class="lg"><div class="row sp"><span>${esc(s.name)} ${s.cert?'🏅':''}</span><span class="np"><button class="x" data-reset="${esc(s.id)}" title="٣ محاولات">↺</button><button class="x" data-del-st="${esc(s.id)}">🗑</button></span></div><div class="mut">${esc(s.cls)} • المحاولات ${ar(s.att)} • أنجز ${ar(s.solved)} سؤال • أفضل نتيجة ${ar(s.best)}</div></div>`).join(''):'<p class="mut ctr">لا يوجد طلاب</p>';
+  }
+}
+$('tsearch').addEventListener('input',()=>isT&&dash());$('tfilter').addEventListener('change',()=>isT&&dash());
+
+async function batchDo(refs,fn){for(let i=0;i<refs.length;i+=400){const b=writeBatch(fs);refs.slice(i,i+400).forEach(r=>fn(b,r));await b.commit()}}
+async function wrap(p,okMsg){try{await p;if(okMsg)toast(okMsg)}catch(e){toast('تعذر تنفيذ العملية (صلاحيات أو اتصال)')}await refresh()}
+async function refresh(){if(!isT)return;try{await loadDash()}catch(e){toast('تعذر تحديث البيانات')}dash()}
+
+const TACT=new Set(['tout','tab1','tab2','resetall','clearall','refresh']);
+const ACT={
+  async speed(){if(!S||S.att<=0)return;G.mode='speed';G.qs=build(speedPool(),50);G.total=90;begin()},
+  pstart(){if(!G.tables.size)return;G.mode='practice';G.qs=build(tablePool(),G.pc);G.total=0;begin()},
+  retry(){if(!G.mist.length)return;const p=G.mist.slice();G.mode='practice';G.qs=build(p,p.length);G.total=0;begin()},
+  again(){if(G.mode==='speed'){if(!S||S.att<=0){toast('استنفدت محاولات تحدي السرعة');return show('home')}ACT.speed()}else ACT.pstart()},
+  quit(){clearTimeout(G.nx);clearInterval(G.tm);logSession();show('home')},
+  submit(){end(false,true)},
+  cert:certShow,
+  sout(){user=null;S=null;show('welcome')},
+  all(){for(let i=1;i<=10;i++)G.tables.add(i);tgrid()},none(){G.tables.clear();tgrid()},
+  r15(){G.tables=new Set([1,2,3,4,5]);tgrid()},r610(){G.tables=new Set([6,7,8,9,10]);tgrid()},
+  print(){window.print()},
+  async tout(){isT=false;clearTimeout(authT);T.students=[];T.logs=[];try{await signOut(auth);await anon()}catch(e){}show('welcome')},
+  tab1(){tab=1;dash()},tab2(){tab=2;dash()},refresh,
+  resetall(){ask('تصفير المحاولات','إعادة ٣ محاولات لجميع الطلاب؟',()=>wrap(batchDo(T.students.map(s=>doc(fs,'students',s.id)),(b,r)=>b.update(r,{att:3})),'أُعيدت ٣ محاولات لجميع الطلاب'))},
+  clearall(){ask('مسح جميع البيانات','سيتم حذف الطلاب والسجلات ولوحة الشرف نهائياً من القاعدة المركزية. هل أنت متأكد؟',()=>wrap((async()=>{
+    for(const c of ['students','logs','board']){const s=await getDocs(collection(fs,c));await batchDo(s.docs.map(d=>d.ref),(b,r)=>b.delete(r))}
+  })(),'تم المسح'))}
+};
+for(let i=0;i<4;i++)$('a'+i).addEventListener('click',()=>answer(i));
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-go],[data-act],[data-del-log],[data-reset],[data-del-st]');if(!t)return;
+  if(t.dataset.go){show(t.dataset.go);return}
+  if(t.dataset.act){const a=t.dataset.act;if(TACT.has(a)&&!isT)return;ACT[a]&&ACT[a]();return}
+  if(!isT)return;armAuth();
+  if(t.dataset.delLog)wrap(deleteDoc(doc(fs,'logs',t.dataset.delLog)));
+  else if(t.dataset.reset)wrap(updateDoc(doc(fs,'students',t.dataset.reset),{att:3}),'تم منح ٣ محاولات');
+  else if(t.dataset.delSt){const id=t.dataset.delSt,s=T.students.find(x=>x.id===id);if(!s)return;
+    ask('حذف طالب','حذف '+s.name+' وجميع سجلاته؟',()=>wrap((async()=>{
+      const l=await getDocs(query(collection(fs,'logs'),where('name','==',s.name)));
+      await batchDo([doc(fs,'students',id),doc(fs,'board',id),...l.docs.map(d=>d.ref)],(b,r)=>b.delete(r));
+    })(),'تم الحذف'))}
+});
+document.addEventListener('keydown',e=>{if(!$('game').classList.contains('on')||'1234'.indexOf(e.key)<0||e.key==='')return;answer(+e.key-1)});
 </script>
 </body>
 </html>
